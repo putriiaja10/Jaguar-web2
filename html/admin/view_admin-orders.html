@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Data Pesanan (WA) Admin - Bubur Ayam Bang Jaka</title>
+    <link rel="stylesheet" href="../../src/output.css">
+
+    <div id="detail-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 font-serif">Detail Pesanan</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-left text-gray-500 mb-4">
+                        <span class="font-bold">ID:</span> <span id="detail-id">#1001</span><br>
+                        <span class="font-bold">Pelanggan:</span> <span id="detail-customer-name">Budi</span><br>
+                        <span class="font-bold">WhatsApp:</span> <span id="detail-whatsapp">081234567890</span>
+                        (<a href="#" id="detail-wa-link" target="_blank"
+                            class="text-green-600 hover:text-green-800">Chat</a>)<br>
+                        <span class="font-bold">Waktu:</span> <span id="detail-time">22 Nov 2025, 15:30</span><br>
+                        <span class="font-bold">Status:</span> <span id="detail-status"
+                            class="font-medium px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800">Menunggu
+                            Konfirmasi</span>
+                    </p>
+                    <h4 class="text-md font-semibold text-left mb-2">Rincian Menu:</h4>
+                    <div id="detail-items" class="text-sm text-left space-y-1 mb-4">
+                    </div>
+                    <p class="text-md font-bold text-left text-gray-900 border-t pt-2">
+                        Total: <span id="detail-total" class="float-right">Rp 0</span>
+                    </p>
+                </div>
+                <div class="items-center px-4 py-3 border-t">
+                    <button id="close-detail-modal"
+                        class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</head>
+
+<body class="font-sans bg-[#fdfaf6] text-gray-800 leading-relaxed overflow-x-hidden flex flex-col min-h-screen">
+
+    <div class="flex flex-1">
+
+        <aside id="sidebar-menu"
+            class="fixed inset-y-0 left-0 z-50 transition-transform duration-300 ease-in-out w-64 bg-white shadow-xl flex flex-col -translate-x-full md:translate-x-0">
+            <div class="h-16 md:h-20 sidebar-header border-b border-gray-100 flex items-center p-4">
+                <span id="sidebar-title"
+                    class="text-xl font-bold font-serif text-[#706442] shrink-0 transition-opacity duration-300">Bubur
+                    Ayam</span>
+
+                <button id="toggle-sidebar"
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#faf1e6] text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e4efe7] shrink-0 ml-auto md:ml-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 8h4V4H4v4zm6 0h4V4h-4v4zm6-4v4h4V4h-4zM4 14h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4zM4 20h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4z" />
+                    </svg>
+                </button>
+
+                <button id="close-sidebar-mobile" class="md:hidden text-gray-800 ml-auto">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-grow p-4 space-y-2">
+                <a href="view_admin-dashboard.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h4" />
+                    </svg>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="view_admin-content.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span>Manajemen Konten</span>
+                </a>
+
+                <a href="view_admin-menu.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span>Manajemen Menu</span>
+                </a>
+
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-[#706442] text-white font-medium">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v5m0 0h5m-5 0h-5a2 2 0 01-2-2v-6a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9m2 7h10" />
+                    </svg>
+                    <span>Data Pesanan (WA)</span>
+                </a>
+
+                <a href="view_admin-reviews.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 14v6m-3-3h6M6 10h2m0 0h12M5 20h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v13a2 2 0 002 2z" />
+                    </svg>
+                    <span>Ulasan Pelanggan</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100 space-y-2">
+                <a href="../tampilan/view_index.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span>Keluar</span>
+                </a>
+            </div>
+        </aside>
+
+        <div id="main-content" class="flex-1 transition-all duration-300 ease-in-out md:ml-64 flex flex-col">
+
+            <header
+                class="h-16 md:h-20 bg-white border-b border-gray-100 flex items-center px-4 md:px-8 shadow-sm sticky top-0 z-40">
+
+                <button id="toggle-sidebar-mobile"
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#faf1e6] text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e4efe7] mr-4 md:hidden">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 8h4V4H4v4zm6 0h4V4h-4v4zm6-4v4h4V4h-4zM4 14h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4zM4 20h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4z" />
+                    </svg>
+                </button>
+
+                <h1 class="text-xl md:text-2xl font-bold font-serif">Daftar Pesanan</h1>
+
+                <div class="relative w-64 md:w-72 ml-auto mr-4 hidden sm:block">
+                    <input type="text" id="search-input" placeholder="Cari pesanan..."
+                        class="pl-3 pr-3 py-2 w-full text-sm rounded-lg border border-gray-300
+                                focus:ring-2 focus:ring-[#706442] focus:border-[#706442] focus:outline-none transition duration-150">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm font-medium hidden sm:block">Bang Jaka</span>
+                    <span
+                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#706442] text-white font-semibold">BJ</span>
+                </div>
+            </header>
+            <main class="p-4 sm:p-6 lg:p-8 flex-grow">
+                <div class="max-w-7xl mx-auto">
+                    
+
+                    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-[#fdfaf6]">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        ID Pesanan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Waktu Pesanan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Nama Pelanggan</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Total Harga</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="orders-table-body">
+
+                                <tr data-id="#1005"
+                                    data-order="{&quot;id_pesanan&quot;:&quot;#1005&quot;,&quot;nama_pelanggan&quot;:&quot;Budi&quot;,&quot;nomor_whatsapp&quot;:&quot;081234567890&quot;,&quot;waktu_pesanan&quot;:&quot;2025-11-23 10:00:00&quot;,&quot;jumlah_total&quot;:50000,&quot;status_pesanan&quot;:&quot;Menunggu Konfirmasi&quot;,&quot;detail_pesanan&quot;:[{&quot;menu&quot;:&quot;Bubur Ayam Spesial&quot;,&quot;qty&quot;:2,&quot;price&quot;:20000,&quot;subtotal&quot;:40000},{&quot;menu&quot;:&quot;Sate Telur&quot;,&quot;qty&quot;:5,&quot;price&quot;:2000,&quot;subtotal&quot;:10000}]}"
+                                    data-total="50000" data-status="Menunggu Konfirmasi">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#1005</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">23 Nov 2025, 10:00
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Budi</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">Rp
+                                        50.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                            Menunggu Konfirmasi
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button data-id="#1005" data-action="detail"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">Detail</button>
+                                        <button data-id="#1005" data-action="confirm"
+                                            class="text-green-600 hover:text-green-900 mr-3">Konfirmasi</button>
+                                        <button data-id="#1005" data-action="cancel"
+                                            class="text-red-600 hover:text-red-900">Batal</button>
+                                    </td>
+                                </tr>
+
+                                <tr data-id="#1004"
+                                    data-order="{&quot;id_pesanan&quot;:&quot;#1004&quot;,&quot;nama_pelanggan&quot;:&quot;Dian&quot;,&quot;nomor_whatsapp&quot;:&quot;081300001111&quot;,&quot;waktu_pesanan&quot;:&quot;2025-11-23 09:45:00&quot;,&quot;jumlah_total&quot;:18000,&quot;status_pesanan&quot;:&quot;Sedang Diproses&quot;,&quot;detail_pesanan&quot;:[{&quot;menu&quot;:&quot;Bubur Ayam Biasa&quot;,&quot;qty&quot;:1,&quot;price&quot;:10000,&quot;subtotal&quot;:10000},{&quot;menu&quot;:&quot;Sate Ayam&quot;,&quot;qty&quot;:4,&quot;price&quot;:2000,&quot;subtotal&quot;:8000}]}"
+                                    data-total="18000" data-status="Sedang Diproses">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#1004</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">23 Nov 2025, 09:45
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Dian</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">Rp
+                                        18.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                            Sedang Diproses
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button data-id="#1004" data-action="detail"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">Detail</button>
+                                        <button data-id="#1004" data-action="complete"
+                                            class="text-green-600 hover:text-green-900 mr-3">Selesai</button>
+                                        <button data-id="#1004" data-action="cancel"
+                                            class="text-red-600 hover:text-red-900">Batal</button>
+                                    </td>
+                                </tr>
+
+                                <tr data-id="#1003"
+                                    data-order="{&quot;id_pesanan&quot;:&quot;#1003&quot;,&quot;nama_pelanggan&quot;:&quot;Eko&quot;,&quot;nomor_whatsapp&quot;:&quot;081234567890&quot;,&quot;waktu_pesanan&quot;:&quot;2025-11-22 17:15:00&quot;,&quot;jumlah_total&quot;:40000,&quot;status_pesanan&quot;:&quot;Selesai&quot;,&quot;detail_pesanan&quot;:[{&quot;menu&quot;:&quot;Bubur Ayam Jumbo&quot;,&quot;qty&quot;:1,&quot;price&quot;:15000,&quot;subtotal&quot;:15000},{&quot;menu&quot;:&quot;Sate Telur&quot;,&quot;qty&quot;:10,&quot;price&quot;:2000,&quot;subtotal&quot;:20000},{&quot;menu&quot;:&quot;Kerupuk&quot;,&quot;qty&quot;:5,&quot;price&quot;:1000,&quot;subtotal&quot;:5000}]}"
+                                    data-total="40000" data-status="Selesai">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#1003</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">22 Nov 2025, 17:15
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Eko</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">Rp
+                                        40.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Selesai
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button data-id="#1003" data-action="detail"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">Detail</button>
+                                        <button disabled
+                                            class="text-gray-400 cursor-not-allowed">Selesai</button>
+                                    </td>
+                                </tr>
+
+                                <tr data-id="#1002"
+                                    data-order="{&quot;id_pesanan&quot;:&quot;#1002&quot;,&quot;nama_pelanggan&quot;:&quot;Citra&quot;,&quot;nomor_whatsapp&quot;:&quot;081512345678&quot;,&quot;waktu_pesanan&quot;:&quot;2025-11-22 15:30:00&quot;,&quot;jumlah_total&quot;:12000,&quot;status_pesanan&quot;:&quot;Dibatalkan&quot;,&quot;detail_pesanan&quot;:[{&quot;menu&quot;:&quot;Bubur Ayam Biasa&quot;,&quot;qty&quot;:1,&quot;price&quot;:10000,&quot;subtotal&quot;:10000},{&quot;menu&quot;:&quot;Kerupuk&quot;,&quot;qty&quot;:2,&quot;price&quot;:1000,&quot;subtotal&quot;:2000}]}"
+                                    data-total="12000" data-status="Dibatalkan">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#1002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">22 Nov 2025, 15:30
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Citra</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">Rp
+                                        12.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            Dibatalkan
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button data-id="#1002" data-action="detail"
+                                            class="text-indigo-600 hover:text-indigo-900 mr-3">Detail</button>
+                                        <button disabled
+                                            class="text-gray-400 cursor-not-allowed">Dibatalkan</button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="bg-white border-t border-gray-100 py-4 text-center">
+                <p class="text-sm text-gray-600">© <span id="year-orders"></span> Bubur Ayam Bang Jaka Admin Dashboard.
+                </p>
+            </footer>
+        </div>
+    </div>
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/db_jaguar.js"></script>
+    <script src="../../js/admin-orders.js"></script>
+</body>
+
+</html>

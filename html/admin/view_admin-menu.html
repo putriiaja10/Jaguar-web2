@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manajemen Menu Admin - Bubur Ayam Bang Jaka</title>
+    <link rel="stylesheet" href="../../src/output.css">
+
+</head>
+
+<body class="font-sans bg-[#fdfaf6] text-gray-800 leading-relaxed overflow-x-hidden">
+
+    <div class="flex min-h-screen">
+
+        <aside id="sidebar-menu"
+            class="fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out w-64 bg-white shadow-xl flex flex-col -translate-x-full md:translate-x-0 md:w-20">
+            <div class="h-16 md:h-20 sidebar-header border-b border-gray-100 flex items-center p-4">
+                <span id="sidebar-title"
+                    class="text-xl font-bold font-serif text-[#706442] shrink-0 transition-opacity duration-300">Bubur
+                    Ayam</span>
+
+                <button id="toggle-sidebar"
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#faf1e6] text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e4efe7] shrink-0 ml-auto md:ml-0">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 8h4V4H4v4zm6 0h4V4h-4v4zm6-4v4h4V4h-4zM4 14h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4zM4 20h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4z" />
+                    </svg>
+                </button>
+
+                <button id="close-sidebar-mobile" class="md:hidden text-gray-800 ml-auto">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="flex-grow p-4 space-y-2">
+                <a href="view_admin-dashboard.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h4" />
+                    </svg>
+                    <span class="sidebar-text">Dashboard</span>
+
+                </a>
+
+                <a href="view_admin-content.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    <span class="sidebar-text">Manajemen Konten</span>
+                </a>
+
+                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg bg-[#706442] text-white font-medium">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span class="sidebar-text">Manajemen Menu</span>
+                </a>
+
+                <a href="view_admin-orders.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2v5m0 0h5m-5 0h-5a2 2 0 01-2-2v-6a2 2 0 012-2h10a2 2 0 012 2v6a2 2 0 01-2 2H7a2 2 0 01-2-2V9m2 7h10" />
+                    </svg>
+                    <span class="sidebar-text">Data Pesanan (WA)</span>
+                </a>
+
+                <a href="view_admin-reviews.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-gray-600 hover:bg-[#faf1e6] hover:text-[#706442] transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 4v-4z" />
+                    </svg>
+                    <span class="sidebar-text">Manajemen Ulasan</span>
+                </a>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100">
+                <a href="../tampilan/view_index.html"
+                    class="flex items-center space-x-3 p-3 rounded-lg text-red-600 hover:bg-red-50 transition">
+                    <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span class="sidebar-text">Keluar</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="flex-grow flex flex-col transition-all duration-300 ease-in-out md:ml-20" id="main-content">
+
+            <header
+                class="h-16 md:h-20 bg-white border-b border-gray-100 flex items-center px-4 md:px-8 shadow-sm sticky top-0 z-40">
+
+                <button id="toggle-sidebar-mobile"
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#faf1e6] text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e4efe7] mr-4 md:hidden">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4 8h4V4H4v4zm6 0h4V4h-4v4zm6-4v4h4V4h-4zM4 14h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4zM4 20h4v-4H4v4zm6 0h4v-4h-4v4zm6-4v4h4v-4h-4z" />
+                    </svg>
+                </button>
+
+                <h1 class="text-xl md:text-2xl font-bold font-serif">Manajemen Menu</h1>
+
+                <div class="ml-auto flex items-center space-x-4">
+                    <span class="text-sm font-medium hidden sm:block">Bang Jaka</span>
+                    <span
+                        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#706442] text-white font-semibold">BJ</span>
+                </div>
+            </header>
+
+            <main class="p-4 md:p-8">
+
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div id="form-section" class="mb-6 border p-4 rounded-lg bg-gray-50 hidden">
+                        <h3 id="form-title" class="text-xl font-semibold mb-4 text-[#706442]">Tambah Menu Baru</h3>
+                        <form id="menu-form" class="space-y-4">
+                            <input type="hidden" id="menu-id" name="menu_id" value="">
+                            <input type="hidden" id="foto-lama" name="foto_lama" value="">
+
+                            <div>
+                                <label for="menu-name" class="block text-sm font-medium text-gray-700">Nama Menu</label>
+                                <input type="text" id="menu-name" name="menu" required
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                            </div>
+
+                            <div>
+                                <label for="menu-description"
+                                    class="block text-sm font-medium text-gray-700">Keterangan</label>
+                                <textarea id="menu-description" name="keterangan_menu" rows="2"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="menu-price" class="block text-sm font-medium text-gray-700">Harga
+                                        (Rp)</label>
+                                    <input type="number" id="menu-price" name="harga" required
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="menu-status" class="block text-sm font-medium text-gray-700">Status
+                                        Menu</label>
+                                    </select><select id="menu-status" name="status_menu"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#706442] focus:border-[#706442] sm:text-sm">
+                                        <option value="Tersedia">Tersedia</option>
+                                        <option value="Habis">Habis</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="menu-foto" class="block text-sm font-medium text-gray-700">Foto Menu</label>
+                                <input type="file" id="menu-foto" name="foto_menu" accept="image/*"
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                <div id="foto-preview-wrapper" class="mt-2 hidden">
+                                    <img id="foto-preview" src="" alt="Foto Preview"
+                                        class="w-20 h-20 object-cover rounded-md border">
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end space-x-3">
+                                <button type="button" id="cancel-edit-btn"
+                                    class="px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 transition hidden">Batal</button>
+                                <button type="submit" id="submit-menu"
+                                    class="px-4 py-2 text-sm font-medium rounded-md text-white bg-[#706442] hover:bg-[#5a5136] transition">Simpan
+                                    Menu</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="toggle-form-btn"
+                            class="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition">
+                            <span id="toggle-form-label">Tambah Menu Baru</span>
+                        </button>
+                        <input type="text" id="menu-search" placeholder="Cari Menu..."
+                            class="p-2 border rounded-md text-sm w-48 focus:border-indigo-500">
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-[#fdfaf6]">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Foto & Nama Menu</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Harga</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Status</th>
+                                    <th
+                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="menu-table-body" class="bg-white divide-y divide-gray-200">
+                                <tr data-id="1">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full object-cover"
+                                                    src="/images/product/buburAyam.png" alt="Bubur Komplit">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Bubur Ayam Komplit</div>
+                                                <div class="text-xs text-gray-500">Bubur dengan suwiran ayam,kerupuk dan
+                                                    pelengkap lainnya.</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 12.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tampil</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                            data-id="1">Edit</button>
+                                        <button class="text-red-600 hover:text-red-900 delete-btn"
+                                            data-id="1">Hapus</button>
+                                    </td>
+                                </tr>
+                                <tr data-id="2">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full object-cover"
+                                                    src="/images/product/sateAtiAmpela.png" alt="Bubur Original">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Sate ati ampela</div>
+                                                <div class="text-xs text-gray-500">Sate ati ayam yang lezat</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 12.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tampil</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                            data-id="2">Edit</button>
+                                        <button class="text-red-600 hover:text-red-900 delete-btn"
+                                            data-id="2">Hapus</button>
+                                    </td>
+                                </tr>
+                                <tr data-id="3">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <img class="h-10 w-10 rounded-full object-cover"
+                                                    src="/images/product/telurAsin.png" alt="Sate Telur">
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900">Telur asin</div>
+                                                <div class="text-xs text-gray-500">Telur asin pendamping bubur ayam
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 5.000</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span
+                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Sembunyi</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                            data-id="3">Edit</button>
+                                        <button class="text-red-600 hover:text-red-900 delete-btn"
+                                            data-id="3">Hapus</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+
+            <footer class="bg-white border-t border-gray-100 py-4 text-center">
+                <p class="text-sm text-gray-600">© <span id="year-menu"></span> Bubur Ayam Bang Jaka Admin Dashboard.
+                </p>
+            </footer>
+        </div>
+    </div>
+    <script src="../../js/admin.js"></script>
+    <script src="../../js/admin-menu.js"></script>
+    
+</body>
+
+</html>

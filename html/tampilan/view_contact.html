@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kontak — Bubur Ayam Bang Jaka</title>
+    <link rel="stylesheet" href="../../src/output.css">
+</head>
+
+<body class="font-sans bg-white text-gray-800 leading-relaxed">
+
+    <header class="sticky top-0 z-50 bg-white">
+        <div class="w-full mx-auto px-4 md:px-8 xl:px-20 flex items-center shadow-md justify-between h-16 md:h-20">
+            <a href="view_index.html" class="flex items-center gap-3">
+                <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#faf1e6]">
+                    <img src="../../images/icon/logo.png" alt="Logo Bubur Ayam Bang Jaka" class="w-7 h-7 object-cover rounded-full">
+                </span>
+                <span class="font-playfair font-bold text-lg md:text-xl text-gray-900 tracking-tight">Bubur Ayam Bang Jaka</span>
+            </a>
+
+            <nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                <a href="view_index.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Home</a>
+                <a href="view_about.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Tentang Kami</a>
+                <a href="view_menu.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Menu</a>
+                <a href="view_galeri.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Galeri</a>
+                <a href="view_reviews.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Review</a>
+                <a href="view_contact.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Kontak</a>
+                <a href="../view_checkout.html" class="ml-4 inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#706442] text-white text-xs md:text-sm font-semibold hover:opacity-90 transition">Pesan Sekarang</a>
+            </nav>
+
+            <div class="flex items-center md:hidden gap-3">
+                <a href="view_menu.html" class="inline-flex items-center relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" viewBox="0 0 640 640" aria-hidden="true">
+                        <path d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z"/>
+                    </svg>
+                </a>
+
+                <button id="mobile-toggle" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#faf1e6] text-gray-800" aria-expanded="false" aria-controls="mobile-menu">
+                    <svg id="hamburger" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg id="close-x" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden origin-top transform hidden w-full bg-white border-t border-gray-100 shadow-lg">
+            <div class="px-4 py-4 space-y-1">
+                <a href="view_index.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Home</a>
+                <a href="view_about.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Tentang Kami</a>
+                <a href="view_menu.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Menu</a>
+                <a href="view_galeri.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Galeri</a>
+                <a href="view_reviews.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Review</a>
+                <a href="view_contact.html" class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Kontak</a>
+                <div class="px-4 py-3">
+                    <a href="../view_checkout.html" class="inline-flex items-center justify-center w-full px-4 py-2 rounded-full bg-[#706442] text-white text-sm font-semibold hover:opacity-90">Pesan Sekarang</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 lg:px-8 xl:px-20 pt-16 md:pt-20 pb-16 lg:pt-24 lg:pb-24 max-w-7xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl lg:text-4xl font-playfair font-semibold mb-3 text-gray-900 text-center">Lokasi & Kontak Kami</h1>
+            <p class="text-base text-gray-600 mb-10 text-center max-w-2xl mx-auto">Temukan lokasi kami di peta, lihat jam operasional, dan hubungi kami langsung via WhatsApp untuk pemesanan cepat.</p>
+
+            <div class="grid grid-cols-1 gap-10 lg:gap-16 items-start">
+                <div class="space-y-6">
+                    <div class="bg-white rounded-2xl p-0 overflow-hidden shadow-md border border-gray-100">
+                        <div class="relative w-full" style="padding-top:45%;">
+                            <iframe id="gmaps-iframe" 
+                                src="about:blank"
+                                class="absolute inset-0 w-full h-full" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100">
+                            <h2 class="text-2xl font-playfair font-semibold mb-3 text-gray-900">Alamat Lengkap</h2>
+                            <p id="alamat-lengkap" class="mt-2 text-base text-gray-700">Memuat alamat...</p>
+                            <a id="gmaps-link" href="#"
+                                target="_blank" class="mt-4 inline-flex items-center text-sm font-medium text-[#706442] hover:text-gray-800 transition">
+                                Lihat di Google Maps
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                            </a>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-md border border-gray-100 text-base text-gray-700">
+                            <p class="text-2xl font-playfair font-semibold text-gray-900 mb-3">Jam Operasional</p>
+                            <div class="space-y-1">
+                                <p id="jam-operasional-text" class="font-medium text-gray-800">Memuat jam operasional...</p>
+                            </div>
+
+                            <p class="mt-4 text-lg font-playfair font-semibold text-gray-900">Hubungi Cepat</p>
+                            <p class="mt-1 text-base">WhatsApp: 
+                                <a id="whatsapp-link-text" href="#" target="_blank" class="text-[#706442] font-semibold hover:underline">
+                                    <span id="whatsapp-number-text">Memuat nomor...</span>
+                                </a>
+                            </p>
+
+                            <a id="whatsapp-link-button" href="#" target="_blank" class="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500 text-white font-semibold text-sm hover:bg-green-600 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 448 512" fill="currentColor">
+                                    <path d="M380.9 97.4C339.7 58.7 283.4 39.8 224 40c-109.8 0-199 89.2-199 199 0 35.3 9.3 68.6 27.2 97.5L34.1 475.2c-1.4 6.2-.2 12.8 3.4 18s9.8 8.1 16.3 8.1c.4 0 .7 0 1.1-.1l105.9-35.3c27.1 16.2 57.3 24.5 87.7 24.5h.1c109.8 0 199-89.2 199-199C448 181.8 428.1 125.5 380.9 97.4zM224 432.8c-28.7 0-57.1-8.5-81.5-25.1l-5.6-3.3-60.7 20.2 20.8-62.2-3.7-5.9c-17.7-28.1-27-60-27-92.4 0-82.6 67.2-149.8 149.8-149.8 42.1 0 81.6 17.5 110.1 46.1 28.5 28.5 46.1 67.9 46.1 110.1 0 82.6-67.2 149.8-149.8 149.8zM337.5 260.8c-2.3-1.1-13.8-6.8-15.9-7.6-2.1-.8-3.6-1.1-5.1 1.1s-5.8 7.6-7.1 9.1c-1.4 1.5-2.7 1.7-5.1 .6-10.6-5.4-23.7-14.7-33.8-31.5-2.8-4.7 2.3-4.3 6.6-5.9 1.2-.5 2.5-1.1 3.7-2.6 1.2-1.5 1.6-2.6 2.3-3.8 1.1-1.7 .6-3.1-.3-5.1-.9-2-5.1-12.3-7-16.8-1.9-4.5-3.9-3.7-5.4-3.8-.7-.1-1.4-.1-2.1-.1s-3.7 .6-5.8 3.1c-2.1 2.5-8 7.8-8 19.1 0 11.3 8.2 22.2 9.4 23.7 1.2 1.5 15.1 23 36.6 32 4.8 2 8.6 3.2 11.5 4.1 4.7 1.4 7.5 1.2 10.3 .8 3.3-.5 13.8-5.6 15.8-11.5 2-5.9 2-10.9 1.4-11.5-.7-.7-2.4-1-5.1-2.3z" />
+                                </svg>
+                                Chat WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#064420] text-white px-4 py-2 rounded shadow-lg hidden"></div>
+
+    <script src="../../js/header.js"></script>
+    <script src="../../js/dashboard.js"></script>
+    <script src="../../js/contact.js"></script>
+
+    <footer class="bg-[#706442] text-white py-8">
+        <div class="max-w-7xl mx-auto px-10 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">© <span id="year"></span> Bubur Ayam Bang Jaka. Designed by Jaguar Team.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bubur Ayam Bang Jaka</title>
+  <link rel="stylesheet" href="/src/output.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+</head>
+
+<body class="font-sans bg-white text-gray-800 leading-relaxed overflow-x-hidden">
+
+  <header class="sticky top-0 z-50 bg-white">
+    <div class="w-full px-4 md:px-8 flex items-center shadow-md justify-between h-16 md:h-20">
+      <a href="view_index.html" class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[#faf1e6]">
+          <img src="/images/icon/logo.png" alt="Logo Bubur Ayam Bang Jaka" class="w-7 h-7 object-cover rounded-full">
+        </span>
+        <span class="font-playfair font-bold text-lg md:text-xl text-gray-900 tracking-tight">Bubur Ayam Bang
+          Jaka</span>
+      </a>
+
+      <nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+        <a href="view_index.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Home</a>
+        <a href="view_about.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Tentang
+          Kami</a>
+        <a href="view_menu.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Menu</a>
+        <a href="view_galeri.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Galeri</a>
+        <a href="view_reviews.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Review</a>
+        <a href="view_contact.html" class="text-sm font-medium text-gray-800 hover:text-[#706442] transition">Kontak</a>
+        <a href="../view_checkout.html"
+          class="ml-4 inline-flex items-center justify-center px-4 py-2 rounded-full bg-[#706442] text-white text-xs md:text-sm font-semibold hover:opacity-90 transition">Pesan
+          Sekarang</a>
+      </nav>
+
+      <div class="flex items-center md:hidden gap-3">
+        <a href="view_menu.html" class="inline-flex items-center relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" viewBox="0 0 640 640"
+            aria-hidden="true">
+            <path
+              d="M24 48C10.7 48 0 58.7 0 72C0 85.3 10.7 96 24 96L69.3 96C73.2 96 76.5 98.8 77.2 102.6L129.3 388.9C135.5 423.1 165.3 448 200.1 448L456 448C469.3 448 480 437.3 480 424C480 410.7 469.3 400 456 400L200.1 400C188.5 400 178.6 391.7 176.5 380.3L171.4 352L475 352C505.8 352 532.2 330.1 537.9 299.8L568.9 133.9C572.6 114.2 557.5 96 537.4 96L124.7 96L124.3 94C119.5 67.4 96.3 48 69.2 48L24 48zM208 576C234.5 576 256 554.5 256 528C256 501.5 234.5 480 208 480C181.5 480 160 501.5 160 528C160 554.5 181.5 576 208 576zM432 576C458.5 576 480 554.5 480 528C480 501.5 458.5 480 432 480C405.5 480 384 501.5 384 528C384 554.5 405.5 576 432 576z" />
+          </svg>
+        </a>
+        <button id="mobile-toggle"
+          class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#faf1e6] text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e4efe7] focus-visible:ring-offset-2"
+          aria-expanded="false" aria-controls="mobile-menu">
+          <svg id="hamburger" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="close-x" class="w-6 h-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu"
+      class="md:hidden origin-top transform hidden w-full bg-white border-t border-gray-100 shadow-lg">
+      <div class="px-4 py-4 space-y-1">
+        <a href="view_index.html"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Home</a>
+        <a href="view_about.html"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Tentang Kami</a>
+        <a href="view_menu.html"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Menu</a>
+        <a href="view_index.html#galeri"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Galeri</a>
+        <a href="view_reviews.html"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Review</a>
+        <a href="view_contact.html"
+          class="block w-full text-left px-4 py-3 text-sm font-medium text-gray-800 hover:bg-[#fdfaf6]">Kontak</a>
+        <div class="px-4 py-3">
+          <a href="../view_checkout.html"
+            class="inline-flex items-center justify-center w-full px-4 py-2 rounded-full bg-[#706442] text-white text-sm font-semibold hover:opacity-90">Pesan
+            Sekarang</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-0 md:pt-0">
+    <section class="relative hero-section bg-gradient-to-b from-gray-900 via-gray-800 to-gray-600 overflow-hidden">
+      <div class="hero-bg-layer hero-bg-1" style="background-image:url('/images/gallery/Toko.png'); z-index:0;">
+      </div>
+      <div class="hero-bg-layer hero-bg-2" style="background-image:url('/images/gallery/bubur.png'); z-index:0;">
+      </div>
+      <div class="hero-bg-layer hero-bg-3" style="background-image:url('/images/gallery/reviewer.png'); z-index:0;">
+      </div>
+
+      <div class="absolute inset-0 bg-black/40" aria-hidden="true"></div>
+
+      <div
+        class="absolute top-6 right-6 md:top-10 md:right-10 z-20 text-white bg-black/50 backdrop-blur-sm rounded-xl p-4 shadow-2xl">
+        <div>
+          <p class="text-sm font-light text-white/80 text-right">Jam Operasional:</p>
+          <p id="jam-operasional" class="text-3xl font-extrabold text-white text-right">05:00 - 12:00 WIB</p>
+        </div>
+      </div>
+
+      <div class="absolute inset-0 flex items-center justify-center text-center px-4 sm:px-6 lg:px-8 z-10">
+        <div class="max-w-4xl">
+          <h1 class="hero-text text-white font-serif text-4xl md:text-6xl font-bold drop-shadow-md">Bubur Ayam<span
+              class="hero-break" aria-hidden="true"></span>Bang Jaka</h1>
+          <h1 class="hero-text delay-1 text-white font-serif text-4xl md:text-6xl font-bold drop-shadow-md">Pilihan
+            Favorit<span class="hero-break" aria-hidden="true"></span>Keluarga</h1>
+          <h1 class="hero-text delay-2 text-white font-serif text-4xl md:text-6xl font-bold drop-shadow-md">Lezat,
+            Halal, Bercita<span class="hero-break" aria-webkit-hidden="true"></span>rasa tinggi dan Higienis</h1>
+
+          <div class="hero-actions-top mt-8">
+            <a href="../view_checkout.html" class="hero-btn hero-btn-order" aria-label="Pesan via WhatsApp">Pesan Via Wa</a>
+            <a href="view_menu.html" class="hero-btn hero-btn-menu" aria-label="Lihat Menu">Lihat Menu</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="bg-secondary py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div data-aos="fade-right">
+          <figure class="aspect-[16/9] overflow-hidden rounded-lg">
+            <img src="/images/gallery/galeri1.jpg" alt="Sejarah Bubur" class="w-full h-full object-cover">
+          </figure>
+        </div>
+        <div data-aos="fade-left">
+          <h2 class="text-3xl font-semibold font-serif">Tentang Kami</h2>
+          <div id="tentang-kami-container">
+            <p class="text-lg leading-relaxed mt-4 text-justify">Bubur Ayam Bang Jaka telah melayani sejak tahun 1998.
+              Dimulai dari
+              gerobak sederhana, kami berkomitmen menyajikan bubur ayam dengan kuah kuning kaya rempah, ayam suwir
+              melimpah, dan racikan bumbu khas keluarga yang selalu konsisten.</p>
+            <p class="text-lg leading-relaxed mt-4 text-justify">Selama lebih dari dua dekade, kami fokus pada kualitas,
+              kebersihan,
+              dan cita rasa tinggi. Kami bangga menjadi pilihan favorit sarapan dan siap melayani Anda, baik di tempat
+              maupun melalui layanan pesan antar online.</p>
+          </div>
+          <a href="view_about.html"
+            class="inline-block mt-6 items-center justify-center px-4 py-2 rounded-full bg-[#706442] text-white text-xs md:text-sm font-semibold hover:opacity-90 transition">Selengkapnya
+            →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="py-12" data-aos="fade-up">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl md:text-3xl font-bold font-serif">Menu</h2>
+      <div id="menu-preview-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-6 mt-6" data-aos="fade-up" data-aos-delay="100">
+          <p class="col-span-full text-center py-10 text-gray-500">Memuat menu...</p>
+      </div>
+
+      <div id="menu-link-container" class="text-center mt-6">
+          <a href="view_menu.html"
+              class="inline-block text-xs font-semibold text-gray-700 underline hover:text-gray-900 transition">
+              Lihat selengkapnya →
+          </a>
+      </div>
+    </div>
+</section>
+
+    <section id="galeri" aria-label="galeri" class="py-3"
+      style="background-image: linear-gradient(to bottom, #fdfaf6 0%, #ffffff 100%);" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 lg:py-4">
+        <h2 class="text-2xl md:text-3xl font-bold font-serif mb-3">Galeri</h2>
+        <div id="galeri-preview-container" class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-3" data-aos="fade-up" data-aos-delay="100">
+          <p class="col-span-full text-center py-10 text-gray-500">Memuat galeri...</p>
+        </div>
+        <div class="text-center mt-4">
+          <a href="view_galeri.html"
+            class="inline-block text-xs font-semibold text-gray-700 underline hover:text-gray-900 transition">
+            Lihat selengkapnya →
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="reviews-preview" class="py-12 bg-secondary" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto text-center mb-8">
+          <h3 class="text-2xl md:text-3xl font-bold font-serif">Ulasan Pelanggan</h3>
+          <p class="mt-2 text-gray-600">Apa kata pelanggan tentang Bubur Ayam Bang Jaka — ringkasan ulasan terbaru dari
+            pelanggan kami.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+          <div id="reviews-container" class="md:col-span-2 space-y-4">
+            <article class="p-4 bg-white rounded-xl shadow-sm border border-gray-100" data-aos="fade-right" data-aos-delay="100">
+              <div class="flex items-center justify-between">
+                <div class="font-semibold text-gray-800">Bambang S.</div>
+                <div class="flex items-center text-sm text-yellow-500">
+                  <span class="mr-1">5.0</span>
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-2 text-gray-600 italic">"Buburnya kental, ayamnya banyak, dan yang paling penting: kerupuknya
+                selalu garing! Porsi pas untuk sarapan, keluarga saya suka semua."</p>
+              <p class="text-xs text-gray-400 mt-2">2 hari yang lalu - via GoFood</p>
+            </article>
+
+            <article class="p-4 bg-white rounded-xl shadow-sm border border-gray-100" data-aos="fade-right" data-aos-delay="200">
+              <div class="flex items-center justify-between">
+                <div class="font-semibold text-gray-800">Siti M.</div>
+                <div class="flex items-center text-sm text-yellow-500">
+                  <span class="mr-1">4.5</span>
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-2 text-gray-600 italic">"Sate telur puyuhnya enak banget! Bubur selalu hangat dan cepat
+                disajikan. Pelayanan di tempat juga ramah. Pertahankan kualitasnya!"</p>
+              <p class="text-xs text-gray-400 mt-2">Minggu lalu - Makan di tempat</p>
+            </article>
+
+            <article class="p-4 bg-white rounded-xl shadow-sm border border-gray-100" data-aos="fade-right" data-aos-delay="300">
+              <div class="flex items-center justify-between">
+                <div class="font-semibold text-gray-800">Rizky A.</div>
+                <div class="flex items-center text-sm text-yellow-500">
+                  <span class="mr-1">5.0</span>
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
+                </div>
+              </div>
+              <p class="mt-2 text-gray-600 italic">"Selalu jadi andalan sarapan. Kuahnya kaya rasa, pas banget dicampur
+                sambal sedikit. Harganya juga sangat terjangkau."</p>
+              <p class="text-xs text-gray-400 mt-2">3 hari yang lalu - via GrabFood</p>
+            </article>
+          </div>
+
+          <aside class="bg-white rounded-2xl shadow-xl p-6 flex flex-col justify-start space-y-4" data-aos="zoom-in" data-aos-delay="400">
+            <div class="text-center p-4 border-b border-gray-100">
+              <p id="rata-rata-rating" class="text-3xl font-extrabold text-gray-800">Memuat...</p>
+              <div id="rating-stars-container" class="flex justify-center items-center mt-1 text-yellow-500">
+              </div>
+              <p id="total-ulasan-text" class="text-sm text-gray-500 mt-1">Memuat jumlah ulasan...</p>
+            </div>
+
+            <div class="text-center pt-2">
+              <p class="text-sm text-gray-600 mb-4">Tinggalkan Ulasan Anda</p>
+              <p class="text-xs text-gray-500">Bantu kami meningkatkan rasa dan pelayanan. Ulasan Anda akan dikirim
+                langsung ke WhatsApp admin.</p>
+              <a href="view_reviews.html"
+                class="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-[#706442] text-white text-sm font-semibold hover:opacity-95 transition duration-200">Tulis
+                Ulasan</a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+    <section class="py-12" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 text-center">
+        <h3 class="text-2xl font-bold font-serif">Order Sekarang</h3>
+        <p class="">Untuk pemesanan cepat, order Bubur Ayam Bang Jaka melalui:</p>
+
+        <div class="mt-6">
+          <div class="marquee-wrap relative left-1/2 -translate-x-1/2 w-screen overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+            <ul class="marquee-list flex items-center space-x-6 sm:space-x-10 whitespace-nowrap min-w-max">
+              <li class="flex items-center space-x-2 px-2">
+                <a href="#" target="_blank" aria-label="Order via GoFood">
+                  <img src="/images/icon/goFood.png" alt="GoFood"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                </a>
+              </li>
+
+              <li class="flex items-center space-x-2 px-2">
+                <a href="#" target="_blank" aria-label="Order via GrabFood">
+                  <img src="/images/icon/grabFood.png" alt="GrabFood"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                </a>
+              </li>
+
+              <li class="flex items-center space-x-2 px-2">
+                <a href="#" target="_blank" aria-label="Order via Maxim">
+                  <img src="/images/icon/maxim.png" alt="Maxim"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                </a>
+              </li>
+
+              <li class="flex items-center space-x-2 px-2">
+                <a href="#" target="_blank" aria-label="Order via ShopeeFood">
+                  <img src="/images/icon/shopeeFoodLogo.png" alt="ShopeeFood Logo"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                  <img src="/images/icon/shopeeFood.png" alt="ShopeeFood"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                </a>
+              </li>
+
+              <li class="flex items-center space-x-2 px-2">
+                <a href="https://wa.me/6281234567890" target="_blank" aria-label="Order via WhatsApp">
+                  <img src="/images/icon/whatsapp.png" alt="WhatsApp Logo"
+                    class="h-6 sm:h-8 md:h-10 w-auto object-contain max-w-xs">
+                  <span class="text-sm sm:text-base md:text-lg font-semibold">WhatsApp</span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <button><a href="view_index.html#"></a></button>
+  <footer class="bg-[#706442] text-white py-6">
+    <div class="max-w-7xl mx-auto px-10 sm:px-6 lg:px-8 text-center">
+      <p class="text-sm">© <span id="year"></span> Bubur Ayam Bang Jaka. Designed by Jaguar Team.</p>
+    </div>
+  </footer>
+
+  <div id="lightbox" class="fixed inset-0 hidden items-center justify-center lightbox-overlay z-50">
+    <button id="lightbox-close" class="absolute top-6 right-6 text-white text-2xl focus:outline-none">✕</button>
+    <img id="lightbox-img" src="" alt="preview" class="max-h-[80vh] max-w-[90%] rounded-lg shadow-2xl">
+  </div>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,
+    once: true,
+  });
+</script>
+  <script src="/js/dashboard.js"></script>
+  <script src="/js/header.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/home.js"></script>
+  <script src="/js/marquee.js"></script>
+  <script src="/js/hero-position.js"></script>
+</body>
+
+</html>
