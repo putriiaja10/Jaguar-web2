@@ -8,8 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let allReviews = [];
 
-    // Format tanggal
     function formatDate(dateString) {
+        if (!dateString) return "Tanggal Tidak Tersedia";
+        
         const date = new Date(dateString);
         if (isNaN(date.getTime())) {
             return "Tanggal Tidak Valid";
@@ -18,8 +19,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return date.toLocaleDateString('id-ID', options);
     }
 
-    // Buat elemen bintang rating
     function createStars(rating) {
+        if (!rating || rating < 0 || rating > 5) rating = 0;
+        
         let stars = '';
         for (let i = 1; i <= 5; i++) {
             if (i <= rating) {
@@ -31,9 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return stars;
     }
 
-    // Show notification
     function showNotification(message, isSuccess = true) {
-        // Remove existing notification
         const existingNotification = document.querySelector('.custom-notification');
         if (existingNotification) {
             existingNotification.remove();
@@ -47,15 +47,35 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.appendChild(notification);
         
-        // Auto remove after 3 seconds
         setTimeout(() => {
-            notification.remove();
-        }, 3000);
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 5000);
     }
 
-    // Buat modal balasan
+    async function testServerConnection() {
+        try {
+            const response = await fetch('/api/health', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Server response: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            return result.success;
+        } catch (error) {
+            console.error('Server connection test failed:', error);
+            return false;
+        }
+    }
+
     function createReplyModal(reviewId, currentReply = '') {
-        // Remove existing modal
         const existingModal = document.getElementById('reply-modal');
         if (existingModal) {
             existingModal.remove();
@@ -68,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="bg-white rounded-xl shadow-2xl w-full max-w-md">
                 <div class="p-6 border-b border-gray-200">
                     <h3 class="text-xl font-bold text-gray-800">Balas Ulasan</h3>
+                    <p class="text-sm text-gray-600 mt-1">ID Ulasan: ${reviewId}</p>
                 </div>
                 <div class="p-6">
                     <textarea 
@@ -84,9 +105,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         </button>
                         <button 
                             id="submit-reply" 
-                            class="px-4 py-2 bg-[#706442] text-white rounded-lg hover:bg-[#5a4f3a] transition flex items-center"
+                            class="px-4 py-2 bg-[#706442] text-white rounded-lg hover:bg-[#5a4f3a] transition flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            <span id="submit-reply-text">Simpan Balasan</span>
+                            <span id="submit-reply-text">${currentReply ? 'Update Balasan' : 'Kirim Balasan'}</span>
                             <span id="submit-reply-spinner" class="hidden ml-2">
                                 <svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
                                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -101,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.body.appendChild(modal);
 
-        // Event listeners untuk modal
         document.getElementById('cancel-reply').addEventListener('click', () => {
             modal.remove();
         });
@@ -110,17 +130,21 @@ document.addEventListener('DOMContentLoaded', function() {
             submitReply(reviewId);
         });
 
-        // Close modal ketika klik di luar
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.remove();
             }
         });
+
+        setTimeout(() => {
+            const textarea = document.getElementById('reply-textarea');
+            if (textarea) textarea.focus();
+        }, 100);
     }
 
-    // Submit balasan ke server
     async function submitReply(reviewId) {
-        const replyText = document.getElementById('reply-textarea').value.trim();
+        const replyTextarea = document.getElementById('reply-textarea');
+        const replyText = replyTextarea ? replyTextarea.value.trim() : '';
         const submitBtn = document.getElementById('submit-reply');
         const submitText = document.getElementById('submit-reply-text');
         const submitSpinner = document.getElementById('submit-reply-spinner');
@@ -130,9 +154,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // Show loading state
+        const isServerConnected = await testServerConnection();
+        if (!isServerConnected) {
+            showNotification('Koneksi server gagal. Periksa koneksi internet dan pastikan server berjalan.', false);
+            return;
+        }
+
         submitBtn.disabled = true;
-        submitText.textContent = 'Menyimpan...';
+        submitText.textContent = 'Mengirim...';
         submitSpinner.classList.remove('hidden');
 
         try {
@@ -146,52 +175,97 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
 
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
             const result = await response.json();
 
             if (result.success) {
-                showNotification('Balasan berhasil disimpan!', true);
-                document.getElementById('reply-modal').remove();
-                loadReviews(); // Reload reviews untuk menampilkan balasan baru
+                alert('Balasan dikirim!');
+                
+                const modal = document.getElementById('reply-modal');
+                if (modal) modal.remove();
+                
+                loadReviews();
             } else {
-                throw new Error(result.message || 'Gagal menyimpan balasan');
+                throw new Error(result.message || 'Gagal mengirim balasan');
             }
         } catch (error) {
             console.error('Error submitting reply:', error);
-            showNotification(`Gagal menyimpan balasan: ${error.message}`, false);
+            
+            let errorMessage = 'Gagal mengirim balasan';
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Koneksi server gagal. Pastikan server berjalan dan dapat diakses.';
+            } else if (error.message.includes('HTTP 404')) {
+                errorMessage = 'Endpoint tidak ditemukan. Periksa konfigurasi server.';
+            } else if (error.message.includes('HTTP 500')) {
+                errorMessage = 'Terjadi kesalahan internal server. Periksa log server.';
+            } else {
+                errorMessage = `Gagal mengirim balasan: ${error.message}`;
+            }
+            
+            showNotification(errorMessage, false);
         } finally {
-            // Reset button state
-            submitBtn.disabled = false;
-            submitText.textContent = 'Simpan Balasan';
-            submitSpinner.classList.add('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitText.textContent = 'Kirim Balasan';
+            }
+            if (submitSpinner) {
+                submitSpinner.classList.add('hidden');
+            }
         }
     }
 
-    // Hapus ulasan
-    async function deleteReview(reviewId) {
-        if (!confirm('Anda yakin ingin menghapus ulasan ini? Tindakan ini tidak dapat dibatalkan.')) {
+    async function deleteAdminReply(reviewId) {
+        if (!confirm('Anda yakin ingin menghapus balasan admin ini?')) {
+            return;
+        }
+
+        const isServerConnected = await testServerConnection();
+        if (!isServerConnected) {
+            showNotification('Koneksi server gagal. Periksa koneksi internet dan pastikan server berjalan.', false);
             return;
         }
 
         try {
-            const response = await fetch(`/api/ulasan/${reviewId}`, {
-                method: 'DELETE'
+            const response = await fetch(`/api/ulasan/${reviewId}/balasan`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    balasan_admin: ''
+                })
             });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
 
             const result = await response.json();
 
             if (result.success) {
-                showNotification('Ulasan berhasil dihapus!', true);
-                loadReviews(); // Reload reviews
+                showNotification('Balasan admin berhasil dihapus!', true);
+                loadReviews();
             } else {
-                throw new Error(result.message || 'Gagal menghapus ulasan');
+                throw new Error(result.message || 'Gagal menghapus balasan admin');
             }
         } catch (error) {
-            console.error('Error deleting review:', error);
-            showNotification(`Gagal menghapus ulasan: ${error.message}`, false);
+            console.error('Error deleting admin reply:', error);
+            
+            let errorMessage = 'Gagal menghapus balasan admin';
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage = 'Koneksi server gagal. Pastikan server berjalan dan dapat diakses.';
+            } else {
+                errorMessage = `Gagal menghapus balasan admin: ${error.message}`;
+            }
+            
+            showNotification(errorMessage, false);
         }
     }
 
-    // Buat elemen review untuk admin
     function createReviewElement(review) {
         const reviewDiv = document.createElement('div');
         reviewDiv.className = 'bg-white p-6 rounded-xl shadow-lg border border-gray-100';
@@ -201,16 +275,35 @@ document.addEventListener('DOMContentLoaded', function() {
         const reviewDate = formatDate(review.tanggal_ulasan || review.waktu_ulasan);
         const stars = createStars(review.rating_bintang);
 
-        // Tampilkan balasan admin jika ada
         let adminReplySection = '';
+        let actionButtons = '';
+
         if (review.balasan_admin && review.balasan_admin.trim() !== '') {
             adminReplySection = `
                 <div class="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
                     <div class="flex items-center justify-between mb-2">
                         <p class="text-sm font-semibold text-blue-700">Balasan Admin:</p>
-                        <button class="edit-reply-btn text-xs text-blue-600 hover:text-blue-800 font-medium" data-id="${review.id_ulasan}">Edit</button>
                     </div>
                     <p class="text-sm text-gray-700">${review.balasan_admin}</p>
+                </div>
+            `;
+            
+            actionButtons = `
+                <div class="flex space-x-3">
+                    <button class="edit-reply-btn text-sm font-semibold text-[#706442] hover:text-[#5a4f3a] transition" data-id="${review.id_ulasan}">
+                        Edit Balasan
+                    </button>
+                    <button class="delete-reply-btn text-sm font-semibold text-red-600 hover:text-red-800 transition">
+                        Hapus Balasan
+                    </button>
+                </div>
+            `;
+        } else {
+            actionButtons = `
+                <div class="flex space-x-3">
+                    <button class="reply-btn text-sm font-semibold text-[#706442] hover:text-[#5a4f3a] transition" data-id="${review.id_ulasan}">
+                        Balas Ulasan
+                    </button>
                 </div>
             `;
         }
@@ -220,70 +313,76 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="flex items-center space-x-3">
                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-blue-500 text-white font-semibold">${initial}</span>
                     <div>
-                        <p class="font-bold text-lg">${review.nama_pengulas}</p>
+                        <p class="font-bold text-lg">${review.nama_pengulas || 'Tidak Ada Nama'}</p>
                         <p class="text-sm text-gray-500">${reviewDate}</p>
                     </div>
                 </div>
                 <div class="flex items-center">
                     ${stars}
-                    <span class="ml-2 text-gray-700 font-semibold">${review.rating_bintang}.0</span>
+                    <span class="ml-2 text-gray-700 font-semibold">${review.rating_bintang || 0}.0</span>
                 </div>
             </div>
-            <p class="text-gray-700 mb-4">${review.komentar}</p>
+            <p class="text-gray-700 mb-4">${review.komentar || 'Tidak ada komentar'}</p>
             ${adminReplySection}
             <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                <div class="flex space-x-3">
-                    <button class="reply-btn text-sm font-semibold text-[#706442] hover:text-[#5a4f3a] transition" data-id="${review.id_ulasan}">
-                        ${review.balasan_admin ? 'Edit Balasan' : 'Balas Ulasan'}
-                    </button>
-                    <button class="delete-btn text-sm font-semibold text-red-600 hover:text-red-800 transition">Hapus</button>
-                </div>
+                ${actionButtons}
                 <span class="text-xs text-gray-500">ID: ${review.id_ulasan}</span>
             </div>
         `;
 
-        // Add event listeners
         const replyBtn = reviewDiv.querySelector('.reply-btn');
-        const deleteBtn = reviewDiv.querySelector('.delete-btn');
         const editReplyBtn = reviewDiv.querySelector('.edit-reply-btn');
+        const deleteReplyBtn = reviewDiv.querySelector('.delete-reply-btn');
 
-        replyBtn.addEventListener('click', () => {
-            const currentReply = review.balasan_admin || '';
-            createReplyModal(review.id_ulasan, currentReply);
-        });
-
-        if (editReplyBtn) {
-            editReplyBtn.addEventListener('click', () => {
-                const currentReply = review.balasan_admin || '';
-                createReplyModal(review.id_ulasan, currentReply);
+        if (replyBtn) {
+            replyBtn.addEventListener('click', () => {
+                createReplyModal(review.id_ulasan, '');
             });
         }
 
-        deleteBtn.addEventListener('click', () => {
-            deleteReview(review.id_ulasan);
-        });
+        if (editReplyBtn) {
+            editReplyBtn.addEventListener('click', () => {
+                createReplyModal(review.id_ulasan, review.balasan_admin || '');
+            });
+        }
+
+        if (deleteReplyBtn) {
+            deleteReplyBtn.addEventListener('click', () => {
+                deleteAdminReply(review.id_ulasan);
+            });
+        }
 
         return reviewDiv;
     }
 
-    // Filter reviews berdasarkan pencarian
     function filterReviews(searchTerm) {
-        const filteredReviews = allReviews.filter(review => 
-            review.nama_pengulas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            review.komentar.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            review.rating_bintang.toString().includes(searchTerm)
-        );
+        if (!searchTerm.trim()) {
+            displayReviews(allReviews);
+            return;
+        }
+
+        const filteredReviews = allReviews.filter(review => {
+            const searchLower = searchTerm.toLowerCase();
+            return (
+                (review.nama_pengulas && review.nama_pengulas.toLowerCase().includes(searchLower)) ||
+                (review.komentar && review.komentar.toLowerCase().includes(searchLower)) ||
+                (review.rating_bintang && review.rating_bintang.toString().includes(searchTerm)) ||
+                (review.balasan_admin && review.balasan_admin.toLowerCase().includes(searchLower))
+            );
+        });
 
         displayReviews(filteredReviews);
     }
 
-    // Tampilkan reviews
     function displayReviews(reviews) {
         if (!reviewsContainer) return;
 
         if (reviews.length === 0) {
             reviewsContainer.innerHTML = `
                 <div class="text-center py-10">
+                    <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
                     <p class="text-gray-500 text-lg">Tidak ada ulasan yang ditemukan</p>
                 </div>
             `;
@@ -297,23 +396,42 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Load reviews dari API
     async function loadReviews() {
         if (!reviewsContainer) return;
 
         reviewsContainer.innerHTML = `
             <div class="text-center py-10">
-                <p class="text-gray-500">Memuat ulasan...</p>
+                <div class="inline-flex items-center">
+                    <svg class="w-5 h-5 animate-spin text-[#706442] mr-3" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-gray-500">Memuat ulasan...</p>
+                </div>
             </div>
         `;
 
         try {
+            const isServerConnected = await testServerConnection();
+            if (!isServerConnected) {
+                throw new Error('Tidak dapat terhubung ke server. Pastikan server berjalan.');
+            }
+
             const response = await fetch('/api/ulasan/all');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
             const result = await response.json();
 
             if (result.success) {
-                allReviews = result.data;
+                allReviews = result.data || [];
                 displayReviews(allReviews);
+                
+                if (allReviews.length === 0) {
+                    showNotification('Tidak ada ulasan yang tersedia.', true);
+                }
             } else {
                 throw new Error(result.message || 'Gagal memuat ulasan');
             }
@@ -321,19 +439,42 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error loading reviews:', error);
             reviewsContainer.innerHTML = `
                 <div class="text-center py-10">
-                    <p class="text-red-500">Gagal memuat ulasan: ${error.message}</p>
+                    <svg class="w-16 h-16 mx-auto text-red-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <p class="text-red-500 text-lg mb-2">Gagal memuat ulasan</p>
+                    <p class="text-gray-600">${error.message}</p>
+                    <button id="retry-load" class="mt-4 px-4 py-2 bg-[#706442] text-white rounded-lg hover:bg-[#5a4f3a] transition">
+                        Coba Lagi
+                    </button>
                 </div>
             `;
+
+            const retryBtn = document.getElementById('retry-load');
+            if (retryBtn) {
+                retryBtn.addEventListener('click', loadReviews);
+            }
         }
     }
 
-    // Event listener untuk pencarian
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             filterReviews(e.target.value);
         });
     }
 
-    // Initialize
-    loadReviews();
+    async function initialize() {
+        console.log('Initializing reviews management...');
+        
+        const isConnected = await testServerConnection();
+        if (!isConnected) {
+            showNotification('Peringatan: Tidak dapat terhubung ke server. Beberapa fitur mungkin tidak berfungsi.', false);
+        }
+        
+        await loadReviews();
+        
+        console.log('Reviews management initialized');
+    }
+
+    initialize();
 });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Nov 2025 pada 21.20
+-- Waktu pembuatan: 27 Nov 2025 pada 17.34
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -64,7 +64,7 @@ CREATE TABLE `informasi_toko` (
 --
 
 INSERT INTO `informasi_toko` (`alamat_lengkap`, `jam_operasional`, `nomor_whatsapp`, `lokasi_gmaps_link`) VALUES
-('Jl. Antara, Klp. Tiga, Kec. Tj. Karang Bar., Kota Bandar Lampung, Lampung 35119', '05.00-12.00 Wib', '089692783848', 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3972.0420204957236!2d105.2448795!3d-5.4105714!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40da5edc62764b%3A0x63793296b57ec0dc!2sPasar%20Tamin!5e0!3m2!1sid!2sid!4v1764086162810!5m2!1sid!2sid');
+('Jl. Antara, Klp. Tiga, Kec. Tj. Karang Bar., Kota Bandar Lampung, Lampung 35119', '05.00-12.00', '089692783848', 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3972.0420204957236!2d105.2448795!3d-5.4105714!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40da5edc62764b%3A0x63793296b57ec0dc!2sPasar%20Tamin!5e0!3m2!1sid!2sid!4v1764086162810!5m2!1sid!2sid');
 
 -- --------------------------------------------------------
 
@@ -85,7 +85,7 @@ CREATE TABLE `konten` (
 --
 
 INSERT INTO `konten` (`tentang_kami`, `visi`, `keunggulan`, `slogan`, `last_updated`) VALUES
-('Bubur Ayam Bang Jaka telah menyajikan bubur ayam nikmat sejak 1998, selalu menekankan cita rasa asli dan layanan hangat bagi setiap pelanggan. Dengan resep turun-temurun dan bahan segar berkualitas, kami berkomitmen menjadi favorit bagi semua yang mencari kenikmatan sederhana namun memuaskan. Keunggulan kami terletak pada rasa yang konsisten, pelayanan cepat, dan suasana yang membuat setiap kunjungan terasa spesial. Berlandaskan visi untuk terus menjaga kualitas dan kepuasan pelanggan, kami percaya setiap mangkuk bubur yang tersaji menghadirkan kehangatan dan kebahagiaan. Bubur Hangat, Rasa Selalu Nikmat!', 'Menjadi pilihan utama bubur ayam berkualitas dengan rasa khas yang selalu dinikmati semua kalangan.', 'Resep turun-temurun sejak 1998\nBahan segar dan berkualitas\nPelayanan cepat dan ramah\nRasa konsisten dan autentik', 'Bubur Hangat, Rasa Selalu Nikmat!', '2025-11-25 18:34:06');
+('Bubur Ayam Bang Jaka telah menyajikan bubur ayam nikmat sejak 1998, selalu menekankan cita rasa asli dan layanan hangat bagi setiap pelanggan. Dengan resep turun-temurun dan bahan segar berkualitas, kami berkomitmen menjadi favorit bagi semua yang mencari kenikmatan sederhana namun memuaskan. Keunggulan kami terletak pada rasa yang konsisten, pelayanan cepat, dan suasana yang membuat setiap kunjungan terasa spesial. Berlandaskan visi untuk terus menjaga kualitas dan kepuasan pelanggan, kami percaya setiap mangkuk bubur yang tersaji menghadirkan kehangatan dan kebahagiaan. Bubur Hangat, Rasa Selalu Nikmat!', 'Menjadi pilihan utama bubur ayam berkualitas dengan rasa khas yang selalu dinikmati semua kalangan.', 'Resep turun-temurun sejak 1998\nBahan segar dan berkualitas\nPelayanan cepat dan ramah\nRasa konsisten dan autentik', 'Bubur Hangat, Rasa Selalu Nikmat!', '2025-11-27 04:21:11');
 
 -- --------------------------------------------------------
 
@@ -148,7 +148,9 @@ INSERT INTO `pesanan` (`id`, `tanggal_pesanan`, `waktu_pesanan`, `nama_pelanggan
 (14, '2025-11-26', '2025-11-26 09:40:00', 'Guntur', '081212121212', 10000.00, 'Telur Asin x2 (Rp 10.000);', 'Selesai'),
 (15, '2025-11-26', '2025-11-26 09:45:00', 'Hana', '085234567890', 14000.00, 'Bubur Ayam x1 (Rp 12.000); Sate telur puyuh x1 (Rp 2.000);', 'Dibatalkan'),
 (24, '2025-11-27', '2025-11-27 00:23:06', 'putrinn', '089692783848', 24000.00, 'Bubur Ayam x2 (Rp 24.000);', 'Selesai'),
-(25, '2025-11-27', '2025-11-27 03:19:45', 'putri888', '089692783848', 30000.00, 'Telur Asin x6 (Rp 30.000);', 'Dikonfirmasi');
+(25, '2025-11-27', '2025-11-27 03:19:45', 'putri888', '089692783848', 30000.00, 'Telur Asin x6 (Rp 30.000);', 'Dikonfirmasi'),
+(26, '2025-11-27', '2025-11-27 11:20:21', 'putriiiii3', '089692783848', 41000.00, 'Bubur Ayam x3 (Rp 36.000); Telur Asin x1 (Rp 5.000);', 'Dikonfirmasi'),
+(27, '2025-11-27', '2025-11-27 23:27:04', 'putri888', '089692783848', 2000.00, 'Sate telur puyuh x1 (Rp 2.000);', 'Dikonfirmasi');
 
 -- --------------------------------------------------------
 
@@ -174,7 +176,7 @@ INSERT INTO `ulasan` (`id_ulasan`, `tanggal_ulasan`, `waktu_ulasan`, `nama_pengu
 (101, '2025-11-17', '2025-11-17 08:00:00', 'Siti', 5, 'Buburnya selalu enak dan toppingnya melimpah! Favorit keluarga.', ''),
 (102, '2025-11-19', '2025-11-19 11:30:00', 'Deny', 4, 'Pelayanan cepat. Cuma agak antri kalau pagi. Mungkin bisa ditambah kursi?', NULL),
 (103, '2025-11-20', '2025-11-20 15:00:00', 'Budi Hartono', 5, 'Rasa autentik, tidak ada duanya! Selalu fresh.', NULL),
-(114, '2025-11-27', '2025-11-27 00:31:21', 'putrinn', 5, 'wagelasee mantap', 'iyakah');
+(114, '2025-11-27', '2025-11-27 00:31:21', 'putrinn', 5, 'wagelasee mantap', 'iyakah?');
 
 --
 -- Indexes for dumped tables
@@ -218,7 +220,7 @@ ALTER TABLE `ulasan`
 -- AUTO_INCREMENT untuk tabel `galeri_foto`
 --
 ALTER TABLE `galeri_foto`
-  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`
@@ -230,13 +232,13 @@ ALTER TABLE `menu`
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT untuk tabel `ulasan`
 --
 ALTER TABLE `ulasan`
-  MODIFY `id_ulasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
+  MODIFY `id_ulasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
