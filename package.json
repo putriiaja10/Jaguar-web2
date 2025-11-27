@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build:css": "npx tailwindcss -i ./src/input.css -o ./src/output.css --minify",
-    "start": "node ./server/server.js",
+    "start": "node ./server/server_jaguar.js",
     "start:api": "node api/api.js",
     "start:html": "npx http-server ./html -p 8000",
     "check": "node tools/run_headless_check.js",

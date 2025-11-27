@@ -29,7 +29,6 @@ try {
     process.exit(1);
 }
 
-// Test database connection
 async function testDatabaseConnection() {
     try {
         const connection = await pool.getConnection();
@@ -93,7 +92,6 @@ const uploadGaleri = multer({
     }
 });
 
-// Middleware
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -102,20 +100,17 @@ app.use(cors({
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
 app.use(express.static(path.join(__dirname, '..')));
 app.use(express.static(path.join(__dirname, '../html/tampilan')));
 app.use(express.static(path.join(__dirname, '../html/admin')));
 app.use(express.static(path.join(__dirname, '../html')));
 app.use('/images', express.static(path.join(__dirname, '../images')));
 
-// Logging middleware
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
     next();
 });
 
-// Routes
 app.get('/api/konten', async (req, res) => {
     try {
         const [results] = await pool.query('SELECT tentang_kami, visi, keunggulan, slogan FROM konten LIMIT 1');
@@ -484,7 +479,6 @@ app.get('/api/pesanan/:id', async (req, res) => {
             try {
                 order.detail_pesanan = JSON.parse(order.detail_pesanan);
             } catch (e) {
-                // Biarkan sebagai string jika parsing gagal
             }
             res.status(200).json({ success: true, message: 'Detail pesanan berhasil diambil.', data: order });
         } else {
@@ -516,8 +510,6 @@ app.put('/api/pesanan/:id/status', async (req, res) => {
         res.status(500).json({ success: false, message: 'Gagal memperbarui status pesanan.', error: error.message });
     }
 });
-
-// ==================== ULASAN ENDPOINTS ====================
 
 app.post('/api/ulasan', async (req, res) => {
     const { nama_pengulas, rating_bintang, komentar } = req.body;
@@ -646,14 +638,12 @@ app.get('/api/ulasan/all', async (req, res) => {
     }
 });
 
-// ENDPOINT BALASAN ULASAN - DIPERBAIKI
 app.put('/api/ulasan/:id/balasan', async (req, res) => {
     const id_ulasan = req.params.id;
     const { balasan_admin } = req.body;
 
     console.log(` Menerima permintaan balasan untuk ulasan ${id_ulasan}:`, balasan_admin);
 
-    // Validasi input
     if (!id_ulasan || isNaN(id_ulasan)) {
         return res.status(400).json({ 
             success: false, 
@@ -669,7 +659,6 @@ app.put('/api/ulasan/:id/balasan', async (req, res) => {
     }
 
     try {
-        // Cek apakah ulasan exists
         const [checkResult] = await pool.query(
             'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?', 
             [id_ulasan]
@@ -683,7 +672,6 @@ app.put('/api/ulasan/:id/balasan', async (req, res) => {
             });
         }
 
-        // Update balasan admin
         const [result] = await pool.query(
             'UPDATE ulasan SET balasan_admin = ? WHERE id_ulasan = ?', 
             [balasan_admin, id_ulasan]
@@ -712,13 +700,11 @@ app.put('/api/ulasan/:id/balasan', async (req, res) => {
     }
 });
 
-// ENDPOINT HAPUS ULASAN - DIPERBAIKI
 app.delete('/api/ulasan/:id', async (req, res) => {
     const id_ulasan = req.params.id;
 
     console.log(` Menerima permintaan hapus ulasan ${id_ulasan}`);
 
-    // Validasi input
     if (!id_ulasan || isNaN(id_ulasan)) {
         return res.status(400).json({ 
             success: false, 
@@ -727,7 +713,6 @@ app.delete('/api/ulasan/:id', async (req, res) => {
     }
 
     try {
-        // Cek apakah ulasan exists
         const [checkResult] = await pool.query(
             'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?', 
             [id_ulasan]
@@ -741,7 +726,6 @@ app.delete('/api/ulasan/:id', async (req, res) => {
             });
         }
 
-        // Hapus ulasan
         const [result] = await pool.query(
             'DELETE FROM ulasan WHERE id_ulasan = ?', 
             [id_ulasan]
@@ -812,7 +796,6 @@ app.put('/api/ulasan/:id', async (req, res) => {
     }
 });
 
-// Test endpoint untuk balasan
 app.get('/api/test-balasan/:id', async (req, res) => {
     const id_ulasan = req.params.id;
     try {
@@ -842,12 +825,10 @@ app.get('/api/test-balasan/:id', async (req, res) => {
     }
 });
 
-// Root route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../html/tampilan/view_index.html'));
 });
 
-// Health check endpoint
 app.get('/api/health', (req, res) => {
     res.status(200).json({ 
         success: true, 
@@ -856,7 +837,6 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// 404 handler - DIPERBAIKI
 app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) {
         return res.status(404).json({ 
@@ -865,14 +845,12 @@ app.use((req, res, next) => {
         });
     }
     
-    // Untuk non-API routes, kirim response JSON sederhana
     res.status(404).json({ 
         success: false, 
         message: 'Halaman tidak ditemukan.' 
     });
 });
 
-// Error handling middleware
 app.use((error, req, res, next) => {
     console.error(' Unhandled Error:', error);
     res.status(500).json({ 
@@ -882,7 +860,6 @@ app.use((error, req, res, next) => {
     });
 });
 
-// Start server
 app.listen(PORT, () => {
     console.log(` Server berjalan di http://localhost:${PORT}`);
 });
