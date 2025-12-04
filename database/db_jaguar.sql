@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 27 Nov 2025 pada 17.34
+-- Waktu pembuatan: 04 Des 2025 pada 07.42
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -31,20 +31,22 @@ CREATE TABLE `galeri_foto` (
   `id_foto` int(11) NOT NULL,
   `nama_foto` varchar(255) NOT NULL,
   `path_file` varchar(255) NOT NULL,
-  `tanggal_upload` timestamp NOT NULL DEFAULT current_timestamp()
+  `tanggal_upload` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_menu` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `galeri_foto`
 --
 
-INSERT INTO `galeri_foto` (`id_foto`, `nama_foto`, `path_file`, `tanggal_upload`) VALUES
-(10, 'bubur ayam', 'images/galeri/galeri-10.png', '2025-11-26 14:53:52'),
-(11, 'mukbang', 'images/galeri/galeri-11.png', '2025-11-26 14:54:05'),
-(12, 'pamer', 'images/galeri/galeri-12.jpg', '2025-11-26 14:54:16'),
-(13, 'toko', 'images/galeri/galeri-13.png', '2025-11-26 14:54:29'),
-(14, 'tim', 'images/galeri/galeri-14.png', '2025-11-26 14:54:41'),
-(15, 'layan', 'images/galeri/galeri-15.jpg', '2025-11-26 14:54:59');
+INSERT INTO `galeri_foto` (`id_foto`, `nama_foto`, `path_file`, `tanggal_upload`, `id_menu`) VALUES
+(10, 'bubur ayam', 'images/galeri/galeri-10.png', '2025-11-26 14:53:52', NULL),
+(11, 'mukbang', 'images/galeri/galeri-11.png', '2025-11-26 14:54:05', NULL),
+(12, 'pamer', 'images/galeri/galeri-12.jpg', '2025-11-26 14:54:16', NULL),
+(13, 'toko', 'images/galeri/galeri-13.png', '2025-11-26 14:54:29', NULL),
+(14, 'tim', 'images/galeri/galeri-14.png', '2025-11-26 14:54:41', NULL),
+(17, 'mantul', 'images/galeri/galeri-17.jpeg', '2025-12-03 10:47:56', NULL),
+(18, 'dalem', 'images/galeri/galeri-18.jpeg', '2025-12-03 10:48:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,7 @@ CREATE TABLE `konten` (
 --
 
 INSERT INTO `konten` (`tentang_kami`, `visi`, `keunggulan`, `slogan`, `last_updated`) VALUES
-('Bubur Ayam Bang Jaka telah menyajikan bubur ayam nikmat sejak 1998, selalu menekankan cita rasa asli dan layanan hangat bagi setiap pelanggan. Dengan resep turun-temurun dan bahan segar berkualitas, kami berkomitmen menjadi favorit bagi semua yang mencari kenikmatan sederhana namun memuaskan. Keunggulan kami terletak pada rasa yang konsisten, pelayanan cepat, dan suasana yang membuat setiap kunjungan terasa spesial. Berlandaskan visi untuk terus menjaga kualitas dan kepuasan pelanggan, kami percaya setiap mangkuk bubur yang tersaji menghadirkan kehangatan dan kebahagiaan. Bubur Hangat, Rasa Selalu Nikmat!', 'Menjadi pilihan utama bubur ayam berkualitas dengan rasa khas yang selalu dinikmati semua kalangan.', 'Resep turun-temurun sejak 1998\nBahan segar dan berkualitas\nPelayanan cepat dan ramah\nRasa konsisten dan autentik', 'Bubur Hangat, Rasa Selalu Nikmat!', '2025-11-27 04:21:11');
+('Bubur Ayam Bang Jaka telah menyajikan bubur ayam nikmat sejak 1998, selalu menekankan cita rasa asli dan layanan hangat bagi setiap pelanggan. Dengan resep turun-temurun dan bahan segar berkualitas, kami berkomitmen menjadi favorit bagi semua yang mencari kenikmatan sederhana namun memuaskan. Keunggulan kami terletak pada rasa yang konsisten, pelayanan cepat, dan suasana yang membuat setiap kunjungan terasa spesial. Berlandaskan visi untuk terus menjaga kualitas dan kepuasan pelanggan, kami percaya setiap mangkuk bubur yang tersaji menghadirkan kehangatan dan kebahagiaan. Bubur Hangat, Rasa Selalu Nikmat!', 'Menjadi pilihan utama bubur ayam berkualitas dengan rasa khas yang selalu dinikmati semua kalangan.', 'Resep turun-temurun sejak 1998\nBahan segar dan berkualitas\nPelayanan cepat dan ramah\nRasa konsisten dan autentik', 'Bubur Hangat, Rasa Selalu Nikmat!', '2025-12-04 06:41:33');
 
 -- --------------------------------------------------------
 
@@ -107,9 +109,9 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id_menu`, `menu`, `harga`, `status_menu`, `foto`, `keterangan_menu`) VALUES
-(1, 'Bubur Ayam', 12000.00, 'Tersedia', 'menu-1763697433124.png', 'Bubur lembut dengan suwiran ayam, topping bawang goreng, dan kuah gurih.'),
-(3, 'Sate Ati', 2000.00, 'Tersedia', 'menu-1764152373902-526794990.png', 'Sate ati ampela berbumbu manis gurih, cocok sebagai pelengkap bubur.'),
-(4, 'Telur Asin', 5000.00, 'Tersedia', 'menu-1764152411589-471871524.png', 'Telur asin dengan rasa gurih khas, menambah kenikmatan saat disantap bersama bubur.'),
+(1, 'Bubur Ayam', 12000.00, 'Tersedia', 'menu-1764758789974-356675424.jpeg', 'Bubur lembut dengan suwiran ayam, topping bawang goreng, dan kuah gurih.'),
+(3, 'Sate Ati', 2000.00, 'Tersedia', 'menu-1764758773506-658058662.jpeg', 'Sate ati ampela berbumbu manis gurih, cocok sebagai pelengkap bubur.'),
+(4, 'Telur Asin', 5000.00, 'Tersedia', 'menu-1764758744771-640423540.jpeg', 'Telur asin dengan rasa gurih khas, menambah kenikmatan saat disantap bersama bubur.'),
 (5, 'Sate telur puyuh', 2000.00, 'Tersedia', 'menu-1764152452287-787394192.jpg', 'Sate telur puyuh yang gurih dan kaya protein, disajikan dalam tusukan kecil praktis.');
 
 -- --------------------------------------------------------
@@ -148,9 +150,13 @@ INSERT INTO `pesanan` (`id`, `tanggal_pesanan`, `waktu_pesanan`, `nama_pelanggan
 (14, '2025-11-26', '2025-11-26 09:40:00', 'Guntur', '081212121212', 10000.00, 'Telur Asin x2 (Rp 10.000);', 'Selesai'),
 (15, '2025-11-26', '2025-11-26 09:45:00', 'Hana', '085234567890', 14000.00, 'Bubur Ayam x1 (Rp 12.000); Sate telur puyuh x1 (Rp 2.000);', 'Dibatalkan'),
 (24, '2025-11-27', '2025-11-27 00:23:06', 'putrinn', '089692783848', 24000.00, 'Bubur Ayam x2 (Rp 24.000);', 'Selesai'),
-(25, '2025-11-27', '2025-11-27 03:19:45', 'putri888', '089692783848', 30000.00, 'Telur Asin x6 (Rp 30.000);', 'Dikonfirmasi'),
-(26, '2025-11-27', '2025-11-27 11:20:21', 'putriiiii3', '089692783848', 41000.00, 'Bubur Ayam x3 (Rp 36.000); Telur Asin x1 (Rp 5.000);', 'Dikonfirmasi'),
-(27, '2025-11-27', '2025-11-27 23:27:04', 'putri888', '089692783848', 2000.00, 'Sate telur puyuh x1 (Rp 2.000);', 'Dikonfirmasi');
+(25, '2025-11-27', '2025-11-27 03:19:45', 'putri888', '089692783848', 30000.00, 'Telur Asin x6 (Rp 30.000);', 'Selesai'),
+(26, '2025-11-27', '2025-11-27 11:20:21', 'putriiiii3', '089692783848', 41000.00, 'Bubur Ayam x3 (Rp 36.000); Telur Asin x1 (Rp 5.000);', 'Selesai'),
+(27, '2025-11-27', '2025-11-27 23:27:04', 'putri888', '089692783848', 2000.00, 'Sate telur puyuh x1 (Rp 2.000);', 'Selesai'),
+(28, '2025-12-03', '2025-12-03 17:50:52', 'putriiiiiy', '089692783848', 20000.00, 'Bubur Ayam x1 (Rp 12.000); Sate Ati x4 (Rp 8.000);', 'Selesai'),
+(29, '2025-12-03', '2025-12-03 18:45:58', 'putrinn', '089692783848', 14000.00, 'Bubur Ayam x1 (Rp 12.000); Sate telur puyuh x1 (Rp 2.000);', 'Selesai'),
+(31, '2025-12-04', '2025-12-04 00:41:13', 'putrinn', '089692783848', 5000.00, 'Telur Asin x1 (Rp 5.000);', 'Selesai'),
+(32, '2025-12-04', '2025-12-04 13:39:27', 'putriiiiinnnnn', '08969278848', 4000.00, 'Sate telur puyuh x2 (Rp 4.000);', 'Selesai');
 
 -- --------------------------------------------------------
 
@@ -165,18 +171,19 @@ CREATE TABLE `ulasan` (
   `nama_pengulas` varchar(255) NOT NULL,
   `rating_bintang` tinyint(4) NOT NULL CHECK (`rating_bintang` >= 1 and `rating_bintang` <= 5),
   `komentar` text DEFAULT NULL,
-  `balasan_admin` text DEFAULT NULL
+  `balasan_admin` text DEFAULT NULL,
+  `id_menu` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `ulasan`
 --
 
-INSERT INTO `ulasan` (`id_ulasan`, `tanggal_ulasan`, `waktu_ulasan`, `nama_pengulas`, `rating_bintang`, `komentar`, `balasan_admin`) VALUES
-(101, '2025-11-17', '2025-11-17 08:00:00', 'Siti', 5, 'Buburnya selalu enak dan toppingnya melimpah! Favorit keluarga.', ''),
-(102, '2025-11-19', '2025-11-19 11:30:00', 'Deny', 4, 'Pelayanan cepat. Cuma agak antri kalau pagi. Mungkin bisa ditambah kursi?', NULL),
-(103, '2025-11-20', '2025-11-20 15:00:00', 'Budi Hartono', 5, 'Rasa autentik, tidak ada duanya! Selalu fresh.', NULL),
-(114, '2025-11-27', '2025-11-27 00:31:21', 'putrinn', 5, 'wagelasee mantap', 'iyakah?');
+INSERT INTO `ulasan` (`id_ulasan`, `tanggal_ulasan`, `waktu_ulasan`, `nama_pengulas`, `rating_bintang`, `komentar`, `balasan_admin`, `id_menu`) VALUES
+(101, '2025-11-17', '2025-11-17 08:00:00', 'Siti', 5, 'Buburnya selalu enak dan toppingnya melimpah! Favorit keluarga.', 'ha\'alaa', NULL),
+(102, '2025-11-19', '2025-11-19 11:30:00', 'Deny', 4, 'Pelayanan cepat. Cuma agak antri kalau pagi. Mungkin bisa ditambah kursi?', 'eh iyakah?', NULL),
+(103, '2025-11-20', '2025-11-20 15:00:00', 'Budi Hartono', 5, 'Rasa autentik, tidak ada duanya! Selalu fresh.', 'masa iyaa???', NULL),
+(114, '2025-11-27', '2025-11-27 00:31:21', 'putrinn', 5, 'wagelasee mantap', 'hehehe makasih yawww', NULL);
 
 --
 -- Indexes for dumped tables
@@ -210,7 +217,8 @@ ALTER TABLE `pesanan`
 -- Indeks untuk tabel `ulasan`
 --
 ALTER TABLE `ulasan`
-  ADD PRIMARY KEY (`id_ulasan`);
+  ADD PRIMARY KEY (`id_ulasan`),
+  ADD KEY `fk_ulasan_menu` (`id_menu`);
 
 --
 -- AUTO_INCREMENT untuk tabel yang dibuang
@@ -220,25 +228,35 @@ ALTER TABLE `ulasan`
 -- AUTO_INCREMENT untuk tabel `galeri_foto`
 --
 ALTER TABLE `galeri_foto`
-  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_foto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT untuk tabel `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `pesanan`
 --
 ALTER TABLE `pesanan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT untuk tabel `ulasan`
 --
 ALTER TABLE `ulasan`
-  MODIFY `id_ulasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id_ulasan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `ulasan`
+--
+ALTER TABLE `ulasan`
+  ADD CONSTRAINT `fk_ulasan_menu` FOREIGN KEY (`id_menu`) REFERENCES `menu` (`id_menu`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

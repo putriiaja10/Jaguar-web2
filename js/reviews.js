@@ -15,6 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewStatus = document.getElementById('review-status');
     const formTitle = document.getElementById('form-title'); 
 
+    const searchInput = document.getElementById('search-reviews'); 
+    let allReviews = [];
+
     let isEditMode = false;
     let currentReviewId = localStorage.getItem('last_submitted_review_id');
     
@@ -137,6 +140,59 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         return article;
     }
+    
+    function attachReviewActionListeners() {
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                handleEdit(
+                    e.currentTarget.dataset.id, 
+                    e.currentTarget.dataset.name,
+                    e.currentTarget.dataset.rating,
+                    e.currentTarget.dataset.komentar
+                );
+            });
+        });
+        
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const idToDelete = e.currentTarget.dataset.id;
+                handleDelete(idToDelete);
+            });
+        });
+    }
+
+    function renderReviews(reviewsToRender) {
+        if (!reviewsContainer) return;
+
+        reviewsContainer.innerHTML = ''; 
+
+        if (reviewsToRender.length > 0) {
+            reviewsToRender.forEach(review => {
+                const reviewElement = createReviewElement(review);
+                reviewsContainer.appendChild(reviewElement);
+            });
+            
+            attachReviewActionListeners();
+        } else {
+            reviewsContainer.innerHTML = '<p class="text-gray-500 text-center py-10">Tidak ada ulasan yang cocok dengan kata kunci Anda.</p>';
+        }
+    }
+    
+    function filterReviews() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        if (searchTerm === '') {
+            renderReviews(allReviews);
+            return;
+        }
+
+        const filtered = allReviews.filter(review => {
+            return review.nama_pengulas.toLowerCase().includes(searchTerm) ||
+                   review.komentar.toLowerCase().includes(searchTerm);
+        });
+
+        renderReviews(filtered);
+    }
 
     async function handleDelete(id) {
         if (confirm('Anda yakin ingin menghapus ulasan ini? Aksi ini tidak dapat dibatalkan.')) {
@@ -196,43 +252,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.success && data.data.length > 0) {
-                reviewsContainer.innerHTML = '';
-                data.data.sort((a, b) => new Date(b.waktu_ulasan) - new Date(a.waktu_ulasan));
+                allReviews = data.data.sort((a, b) => new Date(b.waktu_ulasan) - new Date(a.waktu_ulasan));
                 
-                data.data.forEach(review => {
-                    const reviewElement = createReviewElement(review);
-                    reviewsContainer.appendChild(reviewElement);
-                });
-                
-                // Attach event listeners for edit and delete buttons
-                document.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        handleEdit(
-                            e.currentTarget.dataset.id, 
-                            e.currentTarget.dataset.name,
-                            e.currentTarget.dataset.rating,
-                            e.currentTarget.dataset.komentar
-                        );
-                    });
-                });
-                
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        const idToDelete = e.currentTarget.dataset.id;
-                        handleDelete(idToDelete);
-                    });
-                });
+                filterReviews();
 
             } else {
                 reviewsContainer.innerHTML = '<p class="text-gray-500 text-center py-10">Belum ada ulasan yang tersedia.</p>';
+                allReviews = [];
             }
         } catch (error) {
             console.error('Gagal memuat ulasan:', error);
             reviewsContainer.innerHTML = '<p class="text-red-500 text-center py-10">Gagal memuat ulasan. Cek server API Anda.</p>';
+            allReviews = [];
         }
     }
     
-    // Initialize star rating
+    if (searchInput) {
+        searchInput.addEventListener('input', filterReviews);
+    }
+    
     if (starButtons.length > 0) {
         setStarRating(5);
         starButtons.forEach(button => {
@@ -244,7 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Character count and form validation
     if (messageInput && charCount && nameInput) {
         const updateCharCount = () => {
             const length = messageInput.value.length;
@@ -258,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCharCount();
     }
 
-    // Form submission
     if (reviewForm) {
         reviewForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -323,7 +359,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Scroll to bottom button
     const scrollToBottomBtn = document.getElementById('scroll-to-bottom');
     const formSection = document.getElementById('review-form-section');
 
