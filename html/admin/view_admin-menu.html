@@ -129,27 +129,36 @@
                             <div>
                                 <label for="menu-name" class="block text-sm font-medium text-gray-700">Nama Menu</label>
                                 <input type="text" id="menu-name" name="menu" required
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2">
                             </div>
 
                             <div>
                                 <label for="menu-description"
                                     class="block text-sm font-medium text-gray-700">Keterangan</label>
                                 <textarea id="menu-description" name="keterangan_menu" rows="2"
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"></textarea>
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2"></textarea>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
+                                    <label for="menu-category" class="block text-sm font-medium text-gray-700">Kategori Menu</label>
+                                    <select id="menu-category" name="kategori_menu" required
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#706442] focus:border-[#706442] sm:text-sm">
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="utama">Utama</option>
+                                        <option value="tambahan">Tambahan</option>
+                                    </select>
+                                </div>
+                                <div>
                                     <label for="menu-price" class="block text-sm font-medium text-gray-700">Harga
                                         (Rp)</label>
                                     <input type="number" id="menu-price" name="harga" required
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-2">
                                 </div>
                                 <div class="mb-4">
                                     <label for="menu-status" class="block text-sm font-medium text-gray-700">Status
                                         Menu</label>
-                                    </select><select id="menu-status" name="status_menu"
+                                    <select id="menu-status" name="status_menu"
                                         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-[#706442] focus:border-[#706442] sm:text-sm">
                                         <option value="Tersedia">Tersedia</option>
                                         <option value="Habis">Habis</option>
@@ -160,7 +169,7 @@
                             <div>
                                 <label for="menu-foto" class="block text-sm font-medium text-gray-700">Foto Menu</label>
                                 <input type="file" id="menu-foto" name="foto_menu" accept="image/*"
-                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                    class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
                                 <div id="foto-preview-wrapper" class="mt-2 hidden">
                                     <img id="foto-preview" src="" alt="Foto Preview"
                                         class="w-20 h-20 object-cover rounded-md border">
@@ -171,7 +180,7 @@
                                 <button type="button" id="cancel-edit-btn"
                                     class="px-4 py-2 text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 transition hidden">Batal</button>
                                 <button type="submit" id="submit-menu"
-                                    class="px-4 py-2 text-sm font-medium rounded-md text-white bg-[#706442] hover:bg-[#5a5136] transition">Simpan
+                                    class="px-4 py-2 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition">Simpan
                                     Menu</button>
                             </div>
                         </form>
@@ -179,11 +188,11 @@
 
                     <div class="flex justify-between items-center mb-4">
                         <button id="toggle-form-btn"
-                            class="px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition">
+                            class="px-4 py-2 text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition">
                             <span id="toggle-form-label">Tambah Menu Baru</span>
                         </button>
                         <input type="text" id="menu-search" placeholder="Cari Menu..."
-                            class="p-2 border rounded-md text-sm w-48 focus:border-indigo-500">
+                            class="p-2 border rounded-md text-sm w-48 focus:border-green-500">
                     </div>
 
                     <div class="overflow-x-auto">
@@ -193,6 +202,9 @@
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Foto & Nama Menu</th>
+                                    <th
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Kategori</th>
                                     <th
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Harga</th>
@@ -219,13 +231,16 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Utama</span>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 12.000</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tampil</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                        <button class="text-green-600 hover:text-green-900 edit-btn mr-4"
                                             data-id="1">Edit</button>
                                         <button class="text-red-600 hover:text-red-900 delete-btn"
                                             data-id="1">Hapus</button>
@@ -244,13 +259,16 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tambahan</span>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 12.000</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Tampil</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                        <button class="text-green-600 hover:text-green-900 edit-btn mr-4"
                                             data-id="2">Edit</button>
                                         <button class="text-red-600 hover:text-red-900 delete-btn"
                                             data-id="2">Hapus</button>
@@ -270,13 +288,16 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Tambahan</span>
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rp 5.000</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
                                             class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Sembunyi</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="text-indigo-600 hover:text-indigo-900 edit-btn mr-4"
+                                        <button class="text-green-600 hover:text-green-900 edit-btn mr-4"
                                             data-id="3">Edit</button>
                                         <button class="text-red-600 hover:text-red-900 delete-btn"
                                             data-id="3">Hapus</button>
@@ -289,7 +310,7 @@
             </main>
 
             <footer class="bg-white border-t border-gray-100 py-4 text-center">
-                <p class="text-sm text-gray-600">© <span id="year-menu"></span> Bubur Ayam Bang Jaka Admin Dashboard.
+                <p class="text-sm text-gray-600">© <span id="year-menu"></span> Bubur Ayam Bang Jaka. Designed by Jaguar Team.
                 </p>
             </footer>
         </div>

@@ -40,7 +40,6 @@ if (toggleButton) {
             sidebar.classList.toggle('open');
             mainContent.classList.toggle('open-margin');
 
-            // Logika mengubah lebar sidebar di desktop
             if (sidebar.classList.contains('open')) {
                 sidebar.classList.remove('md:w-20');
                 sidebar.classList.add('w-64');
@@ -82,7 +81,6 @@ if (closeButtonMobile) {
 if (mainContent) {
     mainContent.addEventListener('click', (e) => {
         if (sidebar.classList.contains('open') && !isDesktop()) {
-            // Periksa apakah klik terjadi di luar sidebar tetapi pada mainContent
             if (!sidebar.contains(e.target) && e.target === mainContent) {
                 sidebar.classList.remove('open');
                 mainContent.classList.remove('opacity-50', 'pointer-events-none');

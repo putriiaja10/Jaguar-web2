@@ -1,4 +1,3 @@
-// admin-reviews.js
 document.addEventListener('DOMContentLoaded', function() {
     const yearEl = document.getElementById('year-reviews');
     if (yearEl) yearEl.textContent = new Date().getFullYear();

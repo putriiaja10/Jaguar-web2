@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Manajemen Konten Admin - Bubur Ayam Bang Jaka</title>
     <link rel="stylesheet" href="../../src/output.css">
-
 </head>
 
 <body class="font-sans bg-[#fdfaf6] text-gray-800 leading-relaxed overflow-x-hidden">
@@ -14,7 +13,7 @@
     <div class="flex min-h-screen">
 
         <aside id="sidebar-menu"
-            class="fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out **w-64** bg-white shadow-xl flex flex-col -translate-x-full md:translate-x-0">
+            class="fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out w-64 bg-white shadow-xl flex flex-col -translate-x-full md:translate-x-0">
             <div class="h-16 md:h-20 sidebar-header border-b border-gray-100 flex items-center p-4">
                 <span id="sidebar-title"
                     class="text-xl font-bold font-serif text-[#706442] shrink-0 transition-opacity duration-300">Bubur
@@ -92,7 +91,7 @@
             </div>
         </aside>
 
-        <div id="main-content" class="flex-grow md:ml-20 transition-all duration-300 ease-in-out">
+        <div id="main-content" class="flex-grow md:ml-64 transition-all duration-300 ease-in-out">
             <header
                 class="h-16 md:h-20 bg-white border-b border-gray-100 flex items-center px-4 md:px-8 shadow-sm sticky top-0 z-40">
 
@@ -148,15 +147,14 @@
                                         dengan resep turun-temurun, menghadirkan kehangatan dan rasa khas yang selalu
                                         dirindukan oleh para pelanggan.
                                     </td>
-                                    <td id="td-fitur"
+                                    <td id="td-fitur-visi"
                                         class="px-6 py-4 whitespace-normal text-sm text-gray-500 break-words w-1/6"
                                         contenteditable="false">
                                         <ul class="list-disc pl-5 space-y-1">
-                                            <p>Menjadi bubur ayam terfavorit yang selalu menjadi pilihan utama keluarga.
-                                            </p>
+                                            <p>Menjadi bubur ayam terfavorit yang selalu menjadi pilihan utama keluarga.</p>
                                         </ul>
                                     </td>
-                                    <td id="td-fitur"
+                                    <td id="td-fitur-keunggulan"
                                         class="px-6 py-4 whitespace-normal text-sm text-gray-500 break-words w-1/6"
                                         contenteditable="false">
                                         <ul class="list-disc pl-5 space-y-1">
@@ -165,7 +163,7 @@
                                             <li>Pelayanan ramah dan cepat</li>
                                         </ul>
                                     </td>
-                                    <td id="td-fitur"
+                                    <td id="td-fitur-slogan"
                                         class="px-6 py-4 whitespace-normal text-sm text-gray-500 break-words w-1/6"
                                         contenteditable="false">
                                         <ul class="list-disc pl-5 space-y-1">
@@ -176,7 +174,7 @@
                                 <tr>
                                     <td colspan="4" class="px-6 py-4 text-center text-sm font-medium bg-gray-50">
                                         <button id="action-btn-fitur"
-                                            class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                             Edit tentang kami
                                         </button>
                                     </td>
@@ -217,10 +215,13 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button id="action-btn-galeri-1-delete"
-                                        class="text-red-600 hover:text-red-900 delete-btn">Hapus Foto</button>
-                                </td>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Galeri 1</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">image_01.jpg</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button id="action-btn-galeri-1-delete"
+                                            class="text-red-600 hover:text-red-900 delete-btn">Hapus Foto</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -245,47 +246,33 @@
 
                             <tbody class="bg-white">
                                 <tr>
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">
-                                        Alamat lengkap
-                                    </td>
-                                    <td id="td-alamat" class="px-6 py-4 text-sm text-gray-700 break-words"
-                                        contenteditable="false">
-                                    </td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium align-top">
-
-                                    </td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">Alamat lengkap</td>
+                                    <td id="td-alamat" class="px-6 py-4 text-sm text-gray-700 break-words" contenteditable="false"></td>
                                 </tr>
 
                                 <tr>
-                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">Jam Operasional</td>
-                                    <td id="td-jam" class="px-6 py-4 text-sm text-gray-700 break-words"
-                                        contenteditable="false"></td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium align-top">
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">Jam Buka</td>
+                                    <td id="td-jam-buka" class="px-6 py-4 text-sm text-gray-700 break-words" contenteditable="false"></td>
+                                </tr>
 
-                                    </td>
+                                <tr>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">Jam Tutup</td>
+                                    <td id="td-jam-tutup" class="px-6 py-4 text-sm text-gray-700 break-words" contenteditable="false"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900">Nomor Whatsapp</td>
-                                    <td id="td-wa" class="px-6 py-4 text-sm text-gray-700 break-words"
-                                        contenteditable="false"></td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium align-top">
-
-                                    </td>
+                                    <td id="td-wa" class="px-6 py-4 text-sm text-gray-700 break-words" contenteditable="false"></td>
                                 </tr>
 
                                 <tr>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900">Lokasi (GMAPS Link)</td>
-                                    <td id="td-gmaps" class="px-6 py-4 text-sm text-gray-700 break-words"
-                                        contenteditable="false"></td>
-                                    <td class="px-6 py-4 text-center text-sm font-medium align-top">
-
-                                    </td>
+                                    <td id="td-gmaps" class="px-6 py-4 text-sm text-gray-700 break-words" contenteditable="false"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3" class="px-6 py-4 text-center text-sm font-medium bg-gray-50">
+                                    <td colspan="2" class="px-6 py-4 text-center text-sm font-medium bg-gray-50">
                                         <button id="edit-all-informasi-toko"
-                                            class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            class="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
                                             Edit Semua Informasi Toko
                                         </button>
                                     </td>
@@ -297,7 +284,7 @@
             </main>
 
             <footer class="bg-white border-t border-gray-100 py-4 text-center">
-                <p class="text-sm text-gray-600">© <span id="year-content"></span> Bubur Ayam Bang Jaka Admin Dashboard.
+                <p class="text-sm text-gray-600">© <span id="year-content"></span> Bubur Ayam Bang Jaka. Designed by Jaguar Team.
                 </p>
             </footer>
         </div>

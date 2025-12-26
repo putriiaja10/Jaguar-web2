@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const opt = menuSelect.selectedOptions[0]; 
         const img = opt?.dataset?.image || ''; 
         const price = opt?.dataset?.price || ''; 
-        // FIX #1: Perbaikan path gambar default (jika menu tidak punya foto)
         if(img) preview.src = img; else preview.src = '../../images/product/buburAyam.png'; 
         if(price) priceEl.textContent = formatCurrency(price); else priceEl.textContent='—'; 
 
@@ -136,15 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://localhost:3000/api/menu'); 
             if (!response.ok) throw new Error('Gagal koneksi ke server API.');
             
-            // FIX #2: Menyesuaikan dengan format response server.js: { success: true, data: [...] }
             const result = await response.json(); 
-
-            // Cek format data dan keberhasilan
             if (!result.success || !Array.isArray(result.data)) {
                  throw new Error('Format data menu tidak valid atau server error: ' + (result.message || 'Data tidak ditemukan.'));
             }
-
-            // Filter menu yang berstatus 'Tersedia' (hanya menu yang tersedia yang ditampilkan di checkout)
             const menuData = result.data.filter(item => item.status_menu === 'Tersedia');
 
             const defaultOption = menuSelect.querySelector('option[value=""]');
@@ -156,7 +150,6 @@ document.addEventListener('DOMContentLoaded', () => {
             menuData.forEach(item => {
                 const option = document.createElement('option');
                 option.value = item.menu;
-                // FIX #3: Menggunakan path relatif yang benar untuk gambar
                 const imagePath = `../../images/menu/${item.foto}`; 
                 option.dataset.image = imagePath;
                 option.dataset.price = Number(item.harga).toFixed(0); 
@@ -167,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updatePreview();
         } catch (error) {
             console.error('Error memuat menu:', error);
-            // Tambahkan pesan error ke console untuk debugging
             const errorOption = document.createElement('option');
             errorOption.value = '';
             errorOption.textContent = `[Gagal memuat menu: ${error.message}]`;
@@ -183,7 +175,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(addToCartBtn) addToCartBtn.addEventListener('click', ()=>{
         const opt = menuSelect.selectedOptions[0]; const name = menuSelect.value; const price = Number(opt?.dataset?.price||0); 
-        // FIX #4: Perbaikan path gambar default saat add to cart
         const image = opt?.dataset?.image||'../../images/product/buburAyam.png'; 
         const qty=DEFAULT_QTY; if(!name){ alert('Pilih menu terlebih dahulu.'); return; } const idx=findCartIndexByName(name);
         if(idx>=0) cart[idx].qty = Number(cart[idx].qty)+qty; else cart.push({ id: Date.now(), name, price, image, qty }); renderCart(); showToast(`${name} ×${qty} ditambahkan`);
@@ -233,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             nomor_whatsapp: cleanPhoneNumber, 
             jumlah_total: total, 
             detail_pesanan: (detailPesananDb.trim() + dbNotes).trim(),
-            // alamat_pemesan tidak dikirim ke API /api/pesanan di server.js, jadi ini dihapus/diabaikan
         };
 
         if (spinner) spinner.classList.remove('hidden'); 
@@ -253,8 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!apiResponse.ok || !apiResult.success) {
                 throw new Error(apiResult.message || 'Gagal menyimpan pesanan ke server.');
             }
-
-            // --- PERBAIKAN UTAMA: Ambil ID dari database response ---
             const dbOrderId = apiResult.id_pesanan; 
             if (!dbOrderId) {
                 throw new Error('Server tidak mengembalikan ID Pesanan.');
@@ -277,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 messageWa += `Catatan: ${notes}\n`; 
             }
             
-            // Gunakan ID dari database
             messageWa = `*ID Pesanan: ${dbOrderId} (Telah dicatat di server)*\n\n` + messageWa; 
 
             const waUrl = `https://wa.me/${ADMIN}?text=${encodeURIComponent(messageWa)}`;

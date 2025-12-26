@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (!reviewsListContainer) return;
 
-    // --- UTILITY FUNCTIONS ---
-
     function renderStars(rating) {
         let starsHtml = '';
         const starIcon = `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 17.27l6.18 3.73-1.64-7.03 5.46-4.73-7.19-.61L12 2 8.19 8.63l-7.19.61 5.46 4.73-1.64 7.03z"/></svg>`;
@@ -14,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return `<div class="flex items-center">${starsHtml}</div>`;
     }
-
-    // Fungsi utama untuk merender satu kartu ulasan
     function renderReviewCard(review) {
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
         const date = new Date(review.waktu_ulasan).toLocaleDateString('id-ID', dateOptions);
@@ -24,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let adminReplyHtml = '';
         if (hasReply) {
-            // Tampilan Balasan Admin (dengan tombol Edit dan Hapus)
             adminReplyHtml = `
                 <div class="mt-4 p-4 bg-gray-50 border-l-4 border-[#706442] rounded-r-md" id="reply-display-${review.id_ulasan}">
                     <p class="text-sm font-semibold text-[#706442]">Balasan dari Admin:</p>
@@ -36,15 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         }
-
-        // Tombol aksi utama (hanya Balas Komentar jika belum ada balasan)
         const actionButtonHtml = !hasReply ? `
             <div class="mt-4 flex justify-end" id="action-btn-wrapper-${review.id_ulasan}">
                 <button type="button" class="btn-reply px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition" data-id="${review.id_ulasan}">Balas Komentar</button>
             </div>
-        ` : `<div id="action-btn-wrapper-${review.id_ulasan}" class="hidden"></div>`; // Wrapper kosong jika sudah ada balasan
-
-        // Form Balasan (tersembunyi secara default)
+        ` : `<div id="action-btn-wrapper-${review.id_ulasan}" class="hidden"></div>`;
         const replyFormHtml = `
             <div id="reply-form-wrapper-${review.id_ulasan}" class="mt-4 hidden">
                 <form class="reply-form" data-review-id="${review.id_ulasan}">
@@ -83,8 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // --- ASYNCHRONOUS DATA LOADING ---
-
     async function getReviews() {
         const response = await fetch('http://localhost:3000/api/ulasan');
         if (!response.ok) {
@@ -105,14 +94,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return true; // Return true on success
+        return true; 
     }
 
     async function loadReviewsTable() {
         reviewsListContainer.innerHTML = '<p class="text-center text-gray-500 py-10">Memuat data ulasan...</p>';
 
         try {
-            // Asumsi getReviews() tersedia di db_jaguar.js
             const { data: reviews } = await getReviews(); 
 
             if (reviews && reviews.length > 0) {
@@ -134,10 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewsListContainer.innerHTML = `<p class="text-center text-red-500 py-10">Gagal memuat ulasan. Pastikan server API berjalan.</p>`;
         }
     }
-    
-    // --- EVENT HANDLERS ---
-    
-    // Fungsi untuk menampilkan atau menyembunyikan form
     function toggleReplyForm(id, isEdit = false, originalReply = '') {
         const formWrapper = document.getElementById(`reply-form-wrapper-${id}`);
         const textArea = document.getElementById(`textarea-${id}`);
@@ -149,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const isVisible = !formWrapper.classList.contains('hidden');
 
-        // Close all other forms and re-show their displays
         document.querySelectorAll('[id^="reply-form-wrapper-"]').forEach(wrapper => {
             if (wrapper.id !== `reply-form-wrapper-${id}`) {
                 wrapper.classList.add('hidden');
@@ -160,22 +143,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (otherActionBtnWrapper) otherActionBtnWrapper.classList.remove('hidden'); 
             }
         });
-
-        // Toggle visibility for the current card
         formWrapper.classList.toggle('hidden');
-        // Sembunyikan balasan dan tombol Balas Komentar saat form dibuka
         if (replyDisplay) replyDisplay.classList.toggle('hidden', !isVisible); 
         if (actionBtnWrapper) actionBtnWrapper.classList.toggle('hidden', !isVisible); 
-        
         if (!isVisible) {
-            // Form is opening
             textArea.value = originalReply;
             textArea.focus();
             submitBtn.textContent = isEdit ? 'Simpan Perubahan' : 'Kirim Balasan';
         } 
     }
-
-    // Handler untuk tombol Hapus (Mengosongkan balasan)
     async function handleDeleteReply(event) {
         const id = event.target.dataset.id;
         if (!confirm('Anda yakin ingin menghapus balasan admin ini? Balasan akan hilang dari database dan antarmuka pengguna.')) return;
@@ -184,12 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
         event.target.textContent = 'Menghapus...';
 
         try {
-            // Menggunakan fungsi saveAdminReply dengan teks kosong ('') untuk menghapus balasan
             const success = await saveAdminReply(id, ''); 
             
             if (success) {
                 alert('Balasan berhasil dihapus!');
-                await loadReviewsTable(); // Muat ulang tabel untuk update tampilan UI
+                await loadReviewsTable();
             } else {
                 alert('Gagal menghapus balasan.');
             }
@@ -198,8 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Koneksi ke server gagal saat menghapus balasan.');
         }
     }
-    
-    // Handler untuk pengiriman form Balasan/Edit
     async function handleAdminReplySubmit(e) {
         e.preventDefault();
         const form = e.target;
@@ -217,12 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = 'Menyimpan...';
 
         try {
-            // Asumsi fungsi saveAdminReply(id_ulasan, replyText) tersedia di db_jaguar.js
             const success = await saveAdminReply(id, replyText); 
 
             if (success) {
                 alert('Balasan admin berhasil disimpan!');
-                await loadReviewsTable(); // Muat ulang tabel untuk update UI sepenuhnya
+                await loadReviewsTable();
             } else {
                 alert('Gagal menyimpan balasan. Silakan coba lagi.');
             }
@@ -235,51 +207,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Fungsi untuk melampirkan semua event listener
     function attachEventListeners() {
-        // Balas Komentar
         document.querySelectorAll('.btn-reply').forEach(btn => {
             btn.onclick = () => {
                 const id = btn.dataset.id;
-                toggleReplyForm(id, false, ''); // Balas baru: isEdit=false, originalReply=''
+                toggleReplyForm(id, false, '');
             };
         });
         
-        // Edit Balasan
         document.querySelectorAll('.edit-reply-btn').forEach(btn => {
             btn.onclick = () => {
                 const id = btn.dataset.id;
                 const originalReply = btn.dataset.originalReply || '';
-                toggleReplyForm(id, true, originalReply); // Edit: isEdit=true, kirim balasan asli
+                toggleReplyForm(id, true, originalReply); 
             };
         });
 
-        // Batal
         document.querySelectorAll('.cancel-reply-btn').forEach(btn => {
             btn.onclick = () => {
                 const id = btn.dataset.id;
                 
                 document.getElementById(`reply-form-wrapper-${id}`)?.classList.add('hidden');
-                // Tampilkan kembali elemen yang disembunyikan
                 document.getElementById(`reply-display-${id}`)?.classList.remove('hidden');
-                // Tampilkan kembali tombol Balas Komentar jika tidak ada balasan
                 if (!document.getElementById(`reply-display-${id}`)) {
                     document.getElementById(`action-btn-wrapper-${id}`)?.classList.remove('hidden'); 
                 }
             };
         });
-        
-        // Hapus
         document.querySelectorAll('.delete-reply-btn').forEach(btn => {
             btn.addEventListener('click', handleDeleteReply);
         });
 
-        // Submit Form
         document.querySelectorAll('.reply-form').forEach(form => {
             form.onsubmit = handleAdminReplySubmit;
         });
     }
-
-    // Mulai memuat data saat halaman selesai dimuat
     loadReviewsTable();
 });

@@ -1,5 +1,4 @@
 const API_BASE_URL = 'http://localhost:3000/api';
-// PERBAIKAN: Mengganti '/gallery' menjadi '/galeri' agar sesuai dengan server.js
 const API_GALLERY = `${API_BASE_URL}/galeri`; 
 
 document.addEventListener('DOMContentLoaded', () => {

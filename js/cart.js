@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Umpan balik visual sederhana untuk tombol tambah ke keranjang pada kartu menu/index.html
-  
   document.querySelectorAll('.add-to-cart').forEach(btn => {
     btn.addEventListener('click', () => {
       const orig = btn.textContent;

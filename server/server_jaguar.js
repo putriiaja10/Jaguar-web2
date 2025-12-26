@@ -54,7 +54,7 @@ const menuStorage = multer.diskStorage({
         cb(null, 'menu-' + uniqueSuffix + ext);
     }
 });
-const uploadMenu = multer({ 
+const uploadMenu = multer({
     storage: menuStorage,
     limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
@@ -66,7 +66,7 @@ const uploadMenu = multer({
     }
 });
 
-const GALERI_UPLOAD_DIR = path.join(__dirname, '../images/galeri/'); 
+const GALERI_UPLOAD_DIR = path.join(__dirname, '../images/galeri/');
 if (!fs.existsSync(GALERI_UPLOAD_DIR)) {
     fs.mkdirSync(GALERI_UPLOAD_DIR, { recursive: true });
 }
@@ -80,7 +80,7 @@ const galeriStorage = multer.diskStorage({
         cb(null, 'temp-galeri-' + uniqueSuffix + ext);
     }
 });
-const uploadGaleri = multer({ 
+const uploadGaleri = multer({
     storage: galeriStorage,
     limits: { fileSize: 5 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
@@ -145,44 +145,79 @@ app.put('/api/konten', async (req, res) => {
 
 app.get('/api/informasi-toko', async (req, res) => {
     try {
-        const [results] = await pool.query('SELECT alamat_lengkap, jam_operasional, nomor_whatsapp, lokasi_gmaps_link FROM informasi_toko LIMIT 1');
+        const [results] = await pool.query(
+            'SELECT alamat_lengkap, jam_buka, jam_tutup, nomor_whatsapp, lokasi_gmaps_link FROM informasi_toko LIMIT 1'
+        );
+
         if (results.length > 0) {
-            res.status(200).json({ success: true, message: 'Informasi toko berhasil diambil.', data: results[0] });
+            const data = results[0];
+
+            res.status(200).json({
+                success: true,
+                data: {
+                    alamat_lengkap: data.alamat_lengkap,
+                    jam_buka: data.jam_buka,
+                    jam_tutup: data.jam_tutup,
+                    nomor_whatsapp: data.nomor_whatsapp,
+                    lokasi_gmaps_link: data.lokasi_gmaps_link
+                }
+            });
+
+
+            res.status(200).json({
+                success: true,
+                data: {
+                    alamat_lengkap: data.alamat_lengkap,
+                    jam_buka: formatTime(data.jam_buka),
+                    jam_tutup: formatTime(data.jam_tutup),
+                    nomor_whatsapp: data.nomor_whatsapp,
+                    lokasi_gmaps_link: data.lokasi_gmaps_link
+                }
+            });
         } else {
-            res.status(200).json({ success: true, message: 'Data kosong.', data: {} });
+            res.status(200).json({ success: true, data: {} });
         }
     } catch (error) {
         console.error('Error mengambil info toko:', error);
-        res.status(500).json({ success: false, message: 'Gagal mengambil informasi toko.', error: error.message });
+        res.status(500).json({ success: false, error: error.message });
     }
 });
 
 app.put('/api/informasi-toko', async (req, res) => {
-    const { alamat_lengkap, jam_operasional, nomor_whatsapp, lokasi_gmaps_link } = req.body;
+    const { alamat_lengkap, jam_buka, jam_tutup, nomor_whatsapp, lokasi_gmaps_link } = req.body;
 
     try {
         const [rows] = await pool.query('SELECT COUNT(*) as cnt FROM informasi_toko');
+
         if (rows[0].cnt === 0) {
             await pool.query(
-                'INSERT INTO informasi_toko (alamat_lengkap, jam_operasional, nomor_whatsapp, lokasi_gmaps_link) VALUES (?, ?, ?, ?)', 
-                [alamat_lengkap, jam_operasional, nomor_whatsapp, lokasi_gmaps_link]
+                'INSERT INTO informasi_toko (alamat_lengkap, jam_buka, jam_tutup, nomor_whatsapp, lokasi_gmaps_link) VALUES (?, ?, ?, ?, ?)',
+                [alamat_lengkap, jam_buka, jam_tutup, nomor_whatsapp, lokasi_gmaps_link]
             );
         } else {
             await pool.query(
-                'UPDATE informasi_toko SET alamat_lengkap=?, jam_operasional=?, nomor_whatsapp=?, lokasi_gmaps_link=?', 
-                [alamat_lengkap, jam_operasional, nomor_whatsapp, lokasi_gmaps_link]
+                'UPDATE informasi_toko SET alamat_lengkap=?, jam_buka=?, jam_tutup=?, nomor_whatsapp=?, lokasi_gmaps_link=?',
+                [alamat_lengkap, jam_buka, jam_tutup, nomor_whatsapp, lokasi_gmaps_link]
             );
         }
-        res.status(200).json({ success: true, message: 'Informasi toko berhasil diperbarui.' });
+
+        res.status(200).json({
+            success: true,
+            message: 'Informasi toko berhasil diperbarui.'
+        });
     } catch (error) {
         console.error('Error update info toko:', error);
-        res.status(500).json({ success: false, message: 'Gagal memperbarui informasi toko.', error: error.message });
+        res.status(500).json({
+            success: false,
+            message: 'Gagal memperbarui informasi toko.',
+            error: error.message
+        });
     }
 });
 
 app.get('/api/menu', async (req, res) => {
     try {
-        const [results] = await pool.query('SELECT id_menu, menu, harga, status_menu, foto, keterangan_menu FROM menu ORDER BY id_menu DESC');
+        const [results] = await pool.query('SELECT id_menu, menu, harga, status_menu, foto, keterangan_menu, kategori_menu FROM menu ORDER BY kategori_menu ASC, menu ASC');
         res.status(200).json({ success: true, message: 'Data menu berhasil diambil.', data: results });
     } catch (error) {
         console.error('Error mengambil menu:', error);
@@ -192,7 +227,7 @@ app.get('/api/menu', async (req, res) => {
 
 app.get('/api/menu/latest', async (req, res) => {
     try {
-        const [results] = await pool.query("SELECT id_menu, menu, harga, status_menu, foto, keterangan_menu FROM menu WHERE status_menu = 'Tersedia' ORDER BY id_menu DESC LIMIT 4");
+        const [results] = await pool.query("SELECT id_menu, menu, harga, status_menu, foto, keterangan_menu FROM menu WHERE status_menu = 'Tersedia' ORDER BY kategori_menu ASC, id_menu DESC LIMIT 4");
         res.status(200).json({ success: true, message: 'Data menu terbaru berhasil diambil.', data: results });
     } catch (error) {
         console.error('Error mengambil menu terbaru:', error);
@@ -201,7 +236,7 @@ app.get('/api/menu/latest', async (req, res) => {
 });
 
 app.post('/api/menu', uploadMenu.single('foto_menu'), async (req, res) => {
-    const { menu, harga, keterangan_menu, status_menu } = req.body;
+    const { menu, harga, keterangan_menu, status_menu, kategori_menu } = req.body;
     const foto = req.file ? req.file.filename : null;
 
     if (!menu || !harga) {
@@ -211,8 +246,9 @@ app.post('/api/menu', uploadMenu.single('foto_menu'), async (req, res) => {
 
     try {
         const final_status = status_menu || 'Tersedia';
-        const query = 'INSERT INTO menu (menu, harga, keterangan_menu, foto, status_menu) VALUES (?, ?, ?, ?, ?)';
-        const [result] = await pool.query(query, [menu, harga, keterangan_menu, foto, final_status]);
+        const final_kategori = kategori_menu || 'Tambahan';
+        const query = 'INSERT INTO menu (menu, harga, keterangan_menu, foto, status_menu, kategori_menu) VALUES (?, ?, ?, ?, ?, ?)';
+        const [result] = await pool.query(query, [menu, harga, keterangan_menu, foto, final_status, final_kategori]);
         res.status(201).json({ success: true, message: 'Menu baru berhasil ditambahkan.', id_menu: result.insertId });
     } catch (error) {
         console.error('Error tambah menu:', error);
@@ -223,7 +259,7 @@ app.post('/api/menu', uploadMenu.single('foto_menu'), async (req, res) => {
 
 app.put('/api/menu/:id', uploadMenu.single('foto_menu'), async (req, res) => {
     const id_menu = req.params.id;
-    const { menu, harga, status_menu, keterangan_menu, hapus_foto_lama } = req.body;
+    const { menu, harga, status_menu, keterangan_menu, kategori_menu, hapus_foto_lama } = req.body;
     const new_foto = req.file ? req.file.filename : null;
 
     try {
@@ -243,8 +279,8 @@ app.put('/api/menu/:id', uploadMenu.single('foto_menu'), async (req, res) => {
             foto_to_save = null;
         }
 
-        const query = 'UPDATE menu SET menu = ?, harga = ?, status_menu = ?, keterangan_menu = ?, foto = ? WHERE id_menu = ?';
-        const [result] = await pool.query(query, [menu, harga, status_menu, keterangan_menu, foto_to_save, id_menu]);
+        const query = 'UPDATE menu SET menu = ?, harga = ?, status_menu = ?, keterangan_menu = ?, kategori_menu = ?, foto = ? WHERE id_menu = ?';
+        const [result] = await pool.query(query, [menu, harga, status_menu, keterangan_menu, kategori_menu, foto_to_save, id_menu]);
 
         if (result.affectedRows > 0) {
             res.status(200).json({ success: true, message: 'Menu berhasil diperbarui.' });
@@ -262,13 +298,13 @@ app.delete('/api/menu/:id', async (req, res) => {
     try {
         const [rows] = await pool.query('SELECT foto FROM menu WHERE id_menu = ?', [id]);
         const foto_lama = rows.length > 0 ? rows[0].foto : null;
-        
+
         const [result] = await pool.query('DELETE FROM menu WHERE id_menu = ?', [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'Menu tidak ditemukan.' });
         }
-        
+
         if (foto_lama) {
             const filePath = path.join(MENU_UPLOAD_DIR, foto_lama);
             if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
@@ -303,7 +339,7 @@ app.get('/api/galeri/latest', async (req, res) => {
 
 app.post('/api/galeri', uploadGaleri.single('foto_galeri'), async (req, res) => {
     const { nama_foto } = req.body;
-    
+
     if (!req.file) {
         return res.status(400).json({ success: false, message: 'File foto wajib diunggah.' });
     }
@@ -323,7 +359,7 @@ app.post('/api/galeri', uploadGaleri.single('foto_galeri'), async (req, res) => 
         fs.renameSync(tempFilePath, finalFilePath);
 
         await pool.query('UPDATE galeri_foto SET path_file = ? WHERE id_foto = ?', [dbPath, id_foto]);
-        
+
         res.status(201).json({ success: true, message: 'Foto galeri berhasil diunggah.' });
     } catch (error) {
         console.error('Error upload galeri:', error);
@@ -331,7 +367,7 @@ app.post('/api/galeri', uploadGaleri.single('foto_galeri'), async (req, res) => 
         if (newFileName && fs.existsSync(path.join(GALERI_UPLOAD_DIR, newFileName))) {
             fs.unlinkSync(path.join(GALERI_UPLOAD_DIR, newFileName));
         }
-        
+
         res.status(500).json({ success: false, message: 'Gagal mengunggah foto galeri.', error: error.message });
     }
 });
@@ -340,13 +376,13 @@ app.delete('/api/galeri/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const [rows] = await pool.query('SELECT path_file FROM galeri_foto WHERE id_foto = ?', [id]);
-        
+
         const [result] = await pool.query('DELETE FROM galeri_foto WHERE id_foto = ?', [id]);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: 'Foto galeri tidak ditemukan.' });
         }
-        
+
         if (rows.length > 0 && rows[0].path_file) {
             const filePath = path.join(__dirname, '..', rows[0].path_file);
             if (fs.existsSync(filePath)) {
@@ -385,19 +421,19 @@ app.post('/api/pesanan', async (req, res) => {
             (CURDATE(), NOW(), ?, ?, ?, ?, 'Menunggu Konfirmasi')
         `;
         const [result] = await pool.query(query, [nama_pelanggan, nomor_whatsapp, jumlah_total, finalDetailPesanan]);
-        
-        res.status(201).json({ 
-            success: true, 
-            message: 'Pesanan berhasil dibuat. Menunggu konfirmasi admin.', 
+
+        res.status(201).json({
+            success: true,
+            message: 'Pesanan berhasil dibuat. Menunggu konfirmasi admin.',
             id_pesanan: result.insertId
         });
 
     } catch (error) {
         console.error('Error membuat pesanan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal membuat pesanan baru.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal membuat pesanan baru.',
+            error: error.message
         });
     }
 });
@@ -410,11 +446,12 @@ app.get('/api/pesanan/dashboard', async (req, res) => {
                 COUNT(id) AS jumlah_pesanan 
             FROM pesanan
             WHERE DATE(tanggal_pesanan) = CURDATE()
-            AND status_pesanan IN ('Dikonfirmasi', 'Selesai');
+            AND status_pesanan = 'Selesai';
+
         `;
         const [metricsResult] = await pool.query(metricsQuery);
         const todayMetrics = metricsResult.length > 0 ? metricsResult[0] : { total_pendapatan: 0, jumlah_pesanan: 0 };
-        
+
         const ordersQuery = `
             SELECT 
                 id, 
@@ -426,10 +463,10 @@ app.get('/api/pesanan/dashboard', async (req, res) => {
             LIMIT 10;
         `;
         const [ordersResult] = await pool.query(ordersQuery);
-        
-        res.status(200).json({ 
-            success: true, 
-            message: 'Data dashboard berhasil diambil.', 
+
+        res.status(200).json({
+            success: true,
+            message: 'Data dashboard berhasil diambil.',
             data: {
                 todayMetrics: todayMetrics,
                 orders: ordersResult
@@ -438,10 +475,10 @@ app.get('/api/pesanan/dashboard', async (req, res) => {
 
     } catch (error) {
         console.error('Error mengambil dashboard pesanan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal mengambil data dashboard pesanan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal mengambil data dashboard pesanan.',
+            error: error.message
         });
     }
 });
@@ -449,7 +486,7 @@ app.get('/api/pesanan/dashboard', async (req, res) => {
 app.get('/api/pesanan', async (req, res) => {
     try {
         const [orders] = await pool.query('SELECT id, tanggal_pesanan, waktu_pesanan, nama_pelanggan, nomor_whatsapp, jumlah_total, detail_pesanan, status_pesanan FROM pesanan ORDER BY waktu_pesanan DESC');
-        
+
         const ordersParsed = orders.map(order => ({
             ...order,
             detail_pesanan: (() => {
@@ -513,8 +550,6 @@ app.put('/api/pesanan/:id/status', async (req, res) => {
 
 app.post('/api/ulasan', async (req, res) => {
     const { nama_pengulas, rating_bintang, komentar } = req.body;
-    
-    console.log('Menerima ulasan baru:', { nama_pengulas, rating_bintang, komentar: komentar.substring(0, 50) + '...' });
 
     if (!nama_pengulas || !rating_bintang || !komentar) {
         return res.status(400).json({ success: false, message: 'Nama, rating, dan komentar wajib diisi.' });
@@ -526,20 +561,18 @@ app.post('/api/ulasan', async (req, res) => {
             VALUES (CURDATE(), NOW(), ?, ?, ?)
         `;
         const [result] = await pool.query(query, [nama_pengulas, rating_bintang, komentar]);
-        
-        console.log('Ulasan berhasil disimpan dengan ID:', result.insertId);
-        
-        res.status(201).json({ 
-            success: true, 
-            message: 'Ulasan berhasil dikirim!', 
-            id_ulasan: result.insertId 
+
+        res.status(201).json({
+            success: true,
+            message: 'Ulasan berhasil dikirim!',
+            id_ulasan: result.insertId
         });
     } catch (error) {
         console.error('Error menyimpan ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal menyimpan ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal menyimpan ulasan.',
+            error: error.message
         });
     }
 });
@@ -549,7 +582,7 @@ app.get('/api/ulasan', async (req, res) => {
         const [reviews] = await pool.query(
             'SELECT id_ulasan, nama_pengulas, rating_bintang, komentar, tanggal_ulasan, waktu_ulasan, balasan_admin FROM ulasan ORDER BY waktu_ulasan DESC LIMIT 5'
         );
-        
+
         const summaryQuery = `
             SELECT 
                 COUNT(id_ulasan) AS total_ulasan,
@@ -559,21 +592,21 @@ app.get('/api/ulasan', async (req, res) => {
         const [summaryResults] = await pool.query(summaryQuery);
         const summary = summaryResults[0];
 
-        res.status(200).json({ 
-            success: true, 
-            message: 'Ulasan berhasil diambil.', 
+        res.status(200).json({
+            success: true,
+            message: 'Ulasan berhasil diambil.',
             data: reviews,
-            stats: { 
+            stats: {
                 total_ulasan: parseInt(summary.total_ulasan) || 0,
                 rating_rata_rata: parseFloat(summary.rata_rata_rating).toFixed(1) || '0.0'
             }
         });
     } catch (error) {
         console.error('Error mengambil ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal mengambil ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal mengambil ulasan.',
+            error: error.message
         });
     }
 });
@@ -593,24 +626,24 @@ app.get('/api/ulasan/summary', async (req, res) => {
                 total_ulasan: parseInt(results[0].total_ulasan) || 0,
                 rata_rata_rating: parseFloat(results[0].rata_rata_rating).toFixed(1) || '0.0'
             };
-            res.status(200).json({ 
-                success: true, 
-                message: 'Ringkasan ulasan berhasil diambil.', 
-                data: data 
+            res.status(200).json({
+                success: true,
+                message: 'Ringkasan ulasan berhasil diambil.',
+                data: data
             });
         } else {
-            res.status(200).json({ 
-                success: true, 
-                message: 'Belum ada ulasan.', 
-                data: { total_ulasan: 0, rata_rata_rating: '0.0' } 
+            res.status(200).json({
+                success: true,
+                message: 'Belum ada ulasan.',
+                data: { total_ulasan: 0, rata_rata_rating: '0.0' }
             });
         }
     } catch (error) {
         console.error('Error mengambil ringkasan ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal mengambil ringkasan ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal mengambil ringkasan ulasan.',
+            error: error.message
         });
     }
 });
@@ -620,20 +653,18 @@ app.get('/api/ulasan/all', async (req, res) => {
         const [reviews] = await pool.query(
             'SELECT * FROM ulasan ORDER BY waktu_ulasan DESC'
         );
-        
-        console.log(`Mengambil ${reviews.length} ulasan dari database`);
-        
-        res.status(200).json({ 
-            success: true, 
-            message: 'Semua ulasan berhasil diambil.', 
-            data: reviews 
+
+        res.status(200).json({
+            success: true,
+            message: 'Semua ulasan berhasil diambil.',
+            data: reviews
         });
     } catch (error) {
         console.error('Error mengambil semua ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal mengambil ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal mengambil ulasan.',
+            error: error.message
         });
     }
 });
@@ -642,60 +673,55 @@ app.put('/api/ulasan/:id/balasan', async (req, res) => {
     const id_ulasan = req.params.id;
     const { balasan_admin } = req.body;
 
-    console.log(` Menerima permintaan balasan untuk ulasan ${id_ulasan}:`, balasan_admin);
-
     if (!id_ulasan || isNaN(id_ulasan)) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'ID ulasan tidak valid.' 
+        return res.status(400).json({
+            success: false,
+            message: 'ID ulasan tidak valid.'
         });
     }
 
     if (balasan_admin === undefined || balasan_admin === null) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'Balasan admin wajib diisi.' 
+        return res.status(400).json({
+            success: false,
+            message: 'Balasan admin wajib diisi.'
         });
     }
 
     try {
         const [checkResult] = await pool.query(
-            'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?', 
+            'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?',
             [id_ulasan]
         );
 
         if (checkResult.length === 0) {
-            console.log(` Ulasan dengan ID ${id_ulasan} tidak ditemukan`);
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Ulasan tidak ditemukan.' 
+            return res.status(404).json({
+                success: false,
+                message: 'Ulasan tidak ditemukan.'
             });
         }
 
         const [result] = await pool.query(
-            'UPDATE ulasan SET balasan_admin = ? WHERE id_ulasan = ?', 
+            'UPDATE ulasan SET balasan_admin = ? WHERE id_ulasan = ?',
             [balasan_admin, id_ulasan]
         );
-        
+
         if (result.affectedRows > 0) {
-            console.log(` Balasan berhasil disimpan untuk ulasan ${id_ulasan}`);
-            res.status(200).json({ 
-                success: true, 
-                message: 'Balasan admin berhasil disimpan.' 
+            res.status(200).json({
+                success: true,
+                message: 'Balasan admin berhasil disimpan.'
             });
         } else {
-            console.log(` Tidak ada perubahan data untuk ulasan ${id_ulasan}`);
-            res.status(200).json({ 
-                success: true, 
-                message: 'Tidak ada perubahan data.' 
+            res.status(200).json({
+                success: true,
+                message: 'Tidak ada perubahan data.'
             });
         }
     } catch (error) {
         console.error(' Error menyimpan balasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal menyimpan balasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal menyimpan balasan.',
+            error: error.message
         });
     }
 });
@@ -703,53 +729,48 @@ app.put('/api/ulasan/:id/balasan', async (req, res) => {
 app.delete('/api/ulasan/:id', async (req, res) => {
     const id_ulasan = req.params.id;
 
-    console.log(` Menerima permintaan hapus ulasan ${id_ulasan}`);
-
     if (!id_ulasan || isNaN(id_ulasan)) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'ID ulasan tidak valid.' 
+        return res.status(400).json({
+            success: false,
+            message: 'ID ulasan tidak valid.'
         });
     }
 
     try {
         const [checkResult] = await pool.query(
-            'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?', 
+            'SELECT id_ulasan FROM ulasan WHERE id_ulasan = ?',
             [id_ulasan]
         );
 
         if (checkResult.length === 0) {
-            console.log(` Ulasan dengan ID ${id_ulasan} tidak ditemukan`);
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Ulasan tidak ditemukan.' 
+            return res.status(404).json({
+                success: false,
+                message: 'Ulasan tidak ditemukan.'
             });
         }
 
         const [result] = await pool.query(
-            'DELETE FROM ulasan WHERE id_ulasan = ?', 
+            'DELETE FROM ulasan WHERE id_ulasan = ?',
             [id_ulasan]
         );
-        
+
         if (result.affectedRows > 0) {
-            console.log(` Ulasan ${id_ulasan} berhasil dihapus`);
-            res.status(200).json({ 
-                success: true, 
-                message: 'Ulasan berhasil dihapus.' 
+            res.status(200).json({
+                success: true,
+                message: 'Ulasan berhasil dihapus.'
             });
         } else {
-            console.log(` Gagal menghapus ulasan ${id_ulasan}`);
-            res.status(500).json({ 
-                success: false, 
-                message: 'Gagal menghapus ulasan.' 
+            res.status(500).json({
+                success: false,
+                message: 'Gagal menghapus ulasan.'
             });
         }
     } catch (error) {
         console.error(' Error menghapus ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal menghapus ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal menghapus ulasan.',
+            error: error.message
         });
     }
 });
@@ -758,12 +779,10 @@ app.put('/api/ulasan/:id', async (req, res) => {
     const id_ulasan = req.params.id;
     const { nama_pengulas, rating_bintang, komentar } = req.body;
 
-    console.log(` Menerima permintaan edit ulasan ${id_ulasan}`);
-
     if (!nama_pengulas || !rating_bintang || !komentar) {
-        return res.status(400).json({ 
-            success: false, 
-            message: 'Nama, rating, dan komentar wajib diisi.' 
+        return res.status(400).json({
+            success: false,
+            message: 'Nama, rating, dan komentar wajib diisi.'
         });
     }
 
@@ -772,26 +791,24 @@ app.put('/api/ulasan/:id', async (req, res) => {
             'UPDATE ulasan SET nama_pengulas = ?, rating_bintang = ?, komentar = ? WHERE id_ulasan = ?',
             [nama_pengulas, rating_bintang, komentar, id_ulasan]
         );
-        
+
         if (result.affectedRows > 0) {
-            console.log(` Ulasan ${id_ulasan} berhasil diperbarui`);
-            res.status(200).json({ 
-                success: true, 
-                message: 'Ulasan berhasil diperbarui.' 
+            res.status(200).json({
+                success: true,
+                message: 'Ulasan berhasil diperbarui.'
             });
         } else {
-            console.log(` Ulasan ${id_ulasan} tidak ditemukan`);
-            res.status(404).json({ 
-                success: false, 
-                message: 'Ulasan tidak ditemukan.' 
+            res.status(404).json({
+                success: false,
+                message: 'Ulasan tidak ditemukan.'
             });
         }
     } catch (error) {
         console.error(' Error memperbarui ulasan:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Gagal memperbarui ulasan.', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Gagal memperbarui ulasan.',
+            error: error.message
         });
     }
 });
@@ -800,27 +817,27 @@ app.get('/api/test-balasan/:id', async (req, res) => {
     const id_ulasan = req.params.id;
     try {
         const [result] = await pool.query(
-            'SELECT * FROM ulasan WHERE id_ulasan = ?', 
+            'SELECT * FROM ulasan WHERE id_ulasan = ?',
             [id_ulasan]
         );
-        
+
         if (result.length > 0) {
-            res.status(200).json({ 
-                success: true, 
-                message: 'Data ulasan ditemukan', 
-                data: result[0] 
+            res.status(200).json({
+                success: true,
+                message: 'Data ulasan ditemukan',
+                data: result[0]
             });
         } else {
-            res.status(404).json({ 
-                success: false, 
-                message: 'Ulasan tidak ditemukan' 
+            res.status(404).json({
+                success: false,
+                message: 'Ulasan tidak ditemukan'
             });
         }
     } catch (error) {
-        res.status(500).json({ 
-            success: false, 
-            message: 'Error test balasan', 
-            error: error.message 
+        res.status(500).json({
+            success: false,
+            message: 'Error test balasan',
+            error: error.message
         });
     }
 });
@@ -830,32 +847,32 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-    res.status(200).json({ 
-        success: true, 
-        message: 'Server berjalan dengan baik', 
-        timestamp: new Date().toISOString() 
+    res.status(200).json({
+        success: true,
+        message: 'Server berjalan dengan baik',
+        timestamp: new Date().toISOString()
     });
 });
 
 app.use((req, res, next) => {
     if (req.path.startsWith('/api/')) {
-        return res.status(404).json({ 
-            success: false, 
-            message: 'Endpoint API tidak ditemukan.' 
+        return res.status(404).json({
+            success: false,
+            message: 'Endpoint API tidak ditemukan.'
         });
     }
-    
-    res.status(404).json({ 
-        success: false, 
-        message: 'Halaman tidak ditemukan.' 
+
+    res.status(404).json({
+        success: false,
+        message: 'Halaman tidak ditemukan.'
     });
 });
 
 app.use((error, req, res, next) => {
     console.error(' Unhandled Error:', error);
-    res.status(500).json({ 
-        success: false, 
-        message: 'Terjadi kesalahan internal server.', 
+    res.status(500).json({
+        success: false,
+        message: 'Terjadi kesalahan internal server.',
         error: process.env.NODE_ENV === 'development' ? error.message : 'Internal Server Error'
     });
 });

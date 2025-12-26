@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const latestReviewsContainer = document.getElementById('latest-reviews-container');
 
     function formatCurrency(v) {
-        // Memastikan input adalah angka
         const number = isNaN(Number(v)) ? 0 : Number(v);
         return 'Rp ' + number.toLocaleString('id-ID');
     }
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function getStarsHtml(rating) {
-        // Memastikan rating adalah integer
         const ratingInt = Math.floor(Number(rating));
         return '⭐'.repeat(ratingInt) + '☆'.repeat(5 - ratingInt);
     }
@@ -34,9 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return `<p class="text-gray-500 p-4">Tidak ada data pesanan hari ini.</p>`;
         }
         
-        // 1. Mengurutkan berdasarkan ID secara Descending (terbaru di atas)
         const sortedOrders = orders.sort((a, b) => b.id - a.id); 
-        // 2. Membatasi hanya 3 pesanan terbaru
         const latestThreeOrders = sortedOrders.slice(0, 3); 
 
         let html = `
@@ -55,8 +51,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         latestThreeOrders.forEach(order => {
             const waktu = new Date(order.waktu_pesanan);
             const waktuFormat = waktu.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            
-            // Menggunakan order.id (dari database)
             const orderId = order.id; 
 
             html += `
@@ -145,7 +139,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             
-            // Membatasi hanya 3 ulasan terbaru
             const latestReviews = reviews.slice(0, 3); 
             let reviewsHtml = '';
 

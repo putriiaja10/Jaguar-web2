@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reviewsContainer = document.getElementById('reviews-container');
     const ulasanApiUrl = '/api/ulasan';
-    
     const reviewForm = document.getElementById('review-form');
     const starButtons = document.querySelectorAll('.star-btn');
     const ratingInput = document.getElementById('r-rating');
